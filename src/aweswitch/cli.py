@@ -58,7 +58,7 @@ ACCOUNT_CRED_FILENAME = {"codex": "auth.json", "claude": ".credentials.json"}
 # profiles/accounts instead of saving an unusable entry.
 RESERVED_PROFILE_NAMES = {
     "__profile__", "account", "add", "apply", "config", "init", "list",
-    "self-update", "show",
+    "self-update", "show", "usage",
 }
 
 # These two credentials are alternative Claude authentication mechanisms.
@@ -3033,6 +3033,86 @@ def redact(data):
     return redacted
 
 
+def _format_usage_timestamp(value):
+    """Format a Unix timestamp as a local datetime string, or pass through."""
+    if isinstance(value, (int, float)) and value > 1_000_000_000:
+        from datetime import datetime
+        return datetime.fromtimestamp(value).strftime("%Y-%m-%d %H:%M:%S")
+    return value
+
+
+def _format_usage_value(value):
+    """Recursively format usage data, turning reset timestamps into local time."""
+    if isinstance(value, dict):
+        return {key: _format_usage_value(val) for key, val in value.items()}
+    if isinstance(value, list):
+        return [_format_usage_value(item) for item in value]
+    return _format_usage_timestamp(value)
+
+
+def _render_usage_block(key, value, indent=2):
+    """Render a single usage field for human output."""
+    prefix = " " * indent
+    if isinstance(value, dict):
+        if not value:
+            return f"{prefix}{key}: {{}}"
+        lines = [f"{prefix}{key}:"]
+        for child_key, child_value in value.items():
+            lines.append(_render_usage_block(child_key, child_value, indent + 2))
+        return "\n".join(lines)
+    if isinstance(value, list):
+        if not value:
+            return f"{prefix}{key}: []"
+        lines = [f"{prefix}{key}:"]
+        for i, item in enumerate(value):
+            lines.append(_render_usage_block(f"[{i}]", item, indent + 2))
+        return "\n".join(lines)
+    return f"{prefix}{key}: {value}"
+
+
+def _format_human_usage(account_name, usage_data):
+    """Render usage data as human-readable lines."""
+    formatted = _format_usage_value(usage_data)
+    lines = [f"{account_name}:"]
+    for key, value in formatted.items():
+        lines.append(_render_usage_block(key, value, 2))
+    return "\n".join(lines)
+
+
+def _render_usage_error(account_name, error):
+    """Render a per-account usage error for human output."""
+    return f"{account_name}: error: {error}"
+
+
+def _redact_usage_data(data):
+    """Redact sensitive fields from usage data for JSON output."""
+    if not isinstance(data, dict):
+        return data
+    result = {}
+    for key, value in data.items():
+        if SECRET_RE.search(key) and isinstance(value, str):
+            result[key] = "<redacted>"
+        elif isinstance(value, dict):
+            result[key] = _redact_usage_data(value)
+        elif isinstance(value, list):
+            result[key] = [
+                _redact_usage_data(item) if isinstance(item, dict) else item
+                for item in value
+            ]
+        else:
+            result[key] = value
+    return result
+
+
+def _get_usage_module():
+    """Lazily import the usage module; dies if it is not present."""
+    try:
+        from aweswitch import usage
+        return usage
+    except ImportError:
+        die("usage module not available")
+
+
 def command_list(config):
     providers = set()
     for kind in PROFILE_KINDS:
@@ -3883,6 +3963,101 @@ def apply_command(profiles, force, opencode, zcode, prune_raw, dry_run):
             execute_zcode_prune(zcode_prune_targets)
         elif not prune_requested:
             warn_zcode_orphans(config)
+
+
+@cli.command("usage", context_settings={"help_option_names": ["-h", "--help"]})
+@click.argument("accounts", nargs=-1)
+@click.option("--all-codex", is_flag=True, help="Select every Codex official account.")
+@click.option("--json", "json_output", is_flag=True, help="Output results as JSON.")
+@click.pass_context
+def usage_command(ctx, accounts, all_codex, json_output):
+    """Show quota usage for Codex official accounts.
+
+    ACCOUNTS are one or more Codex official account names. Combine with
+    --all-codex to include every configured Codex official account.
+    """
+    config = load_config(config_path())
+
+    if accounts and all_codex:
+        die("pass account names or --all-codex, not both")
+
+    resolved = []
+    if all_codex:
+        codex_accounts = kind_group(config, "account").get("codex", {})
+        for name in sorted(codex_accounts):
+            resolved.append((name, "codex", "account", codex_accounts[name]))
+        if not resolved:
+            click.echo(
+                "No Codex official accounts found. Add one with: "
+                "aweswitch account login codex <name>"
+            )
+            ctx.exit(0)
+    else:
+        if not accounts:
+            click.echo(
+                "No account selector given.\n"
+                "\n"
+                "Usage examples:\n"
+                "  aweswitch usage work              # show usage for one Codex official account\n"
+                "  aweswitch usage --all-codex       # show usage for every Codex official account\n"
+            )
+            ctx.exit(0)
+        seen = set()
+        for name in accounts:
+            if name in seen:
+                continue
+            seen.add(name)
+            provider, kind, entry = profile_for(config, name)
+            if kind != "account":
+                die(f"'{name}' is an API profile; usage reads Codex official accounts only")
+            if provider != "codex":
+                die(
+                    f"'{name}' is a {provider} official account; "
+                    "usage reads Codex official accounts only"
+                )
+            resolved.append((name, provider, kind, entry))
+
+    if not resolved:
+        click.echo("No Codex official accounts selected.")
+        ctx.exit(0)
+
+    usage_mod = _get_usage_module()
+    results = []
+    any_failed = False
+
+    for name, provider, kind, entry in resolved:
+        blob = entry.get(ACCOUNT_BLOB_KEY["codex"], {})
+        runtime_path = account_dir("codex", name) / ACCOUNT_CRED_FILENAME["codex"]
+        try:
+            credentials = usage_mod.load_codex_credentials(runtime_path, blob)
+            usage_data = usage_mod.fetch_codex_usage(credentials)
+            results.append({"account": name, "usage": usage_data})
+        except usage_mod.UsageError as exc:
+            results.append({"account": name, "error": str(exc)})
+            any_failed = True
+        except Exception as exc:
+            results.append({"account": name, "error": f"unexpected error: {exc}"})
+            any_failed = True
+
+    if json_output:
+        output = []
+        for item in results:
+            obj = {"account": item["account"]}
+            if "error" in item:
+                obj["error"] = item["error"]
+            else:
+                obj["usage"] = _redact_usage_data(item["usage"])
+            output.append(obj)
+        click.echo(json.dumps(output, indent=2))
+    else:
+        for item in results:
+            if "error" in item:
+                click.echo(_render_usage_error(item["account"], item["error"]))
+            else:
+                click.echo(_format_human_usage(item["account"], item["usage"]))
+
+    if any_failed:
+        ctx.exit(1)
 
 
 @cli.group(context_settings={"help_option_names": ["-h", "--help"]})
