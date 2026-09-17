@@ -3074,8 +3074,94 @@ def _render_usage_block(key, value, indent=2):
     return f"{prefix}{key}: {value}"
 
 
+def _usage_progress(used_percent, width=20):
+    """Return ``(bar, remaining_percent)`` where the bar reflects remaining quota."""
+    remaining = 100.0 - float(used_percent)
+    remaining = max(0.0, min(100.0, remaining))
+    filled = int(round((remaining / 100.0) * width))
+    bar = "\u2588" * filled + "\u2591" * (width - filled)
+    return bar, int(round(remaining))
+
+
+def _usage_window_label(label, window):
+    """Derive a friendly limit name from the window label and its span."""
+    span = window.get("window_minutes")
+    base = label
+    if isinstance(base, str) and base.startswith("additional:"):
+        base = base.split(":", 1)[1]
+    if isinstance(scan := span, (int, float)) and not isinstance(scan, bool):
+        if scan >= 43200:
+            return "30-day limit"
+        if scan >= 10080:
+            return "Weekly limit"
+        if scan >= 1440:
+            return "Daily limit"
+        hours = round(scan / 60.0)
+        if hours < 1:
+            return f"{round(scan / 60.0, 1)}h limit"
+        return f"{hours}h limit"
+    if base:
+        return base[:1].upper() + base[1:]
+    return "limit"
+
+
+def _usage_reset_text(reset_ts):
+    """Format a reset Unix timestamp as a compact local time hint."""
+    if not (isinstance(reset_ts, (int, float)) and not isinstance(reset_ts, bool)):
+        return None
+    if reset_ts <= 1_000_000_000:
+        return None
+    from datetime import datetime
+    target = datetime.fromtimestamp(reset_ts)
+    clock = target.strftime("%H:%M")
+    if target.date() == datetime.now().date():
+        return f"resets {clock}"
+    return f"resets {clock} on {target.day} {target.strftime('%b')}"
+
+
+def _render_usage_window_bar(label, window):
+    """Render one quota window as a labeled progress bar."""
+    name = _usage_window_label(label if isinstance(label, str) else str(label), window or {})
+    used = (window or {}).get("used_percentage")
+    prefix = f"{name}:".ljust(14)
+    if isinstance(used, (int, float)) and not isinstance(used, bool):
+        bar, remaining = _usage_progress(used)
+        body = f"[ {bar} ] {remaining}% left"
+    else:
+        body = "[ .... ]"
+    line = f"  {prefix} {body}"
+    reset_text = _usage_reset_text((window or {}).get("reset_unix_timestamp"))
+    if reset_text:
+        line += f" ({reset_text})"
+    return line
+
+
+def _render_usage_visual(account_name, usage):
+    """Render a normalized usage payload with progress bars."""
+    lines = [f"{account_name}:"]
+    plan = usage.get("plan")
+    if isinstance(plan, str) and plan.strip():
+        lines.append(f"  Plan: {plan}")
+    for label, window in usage.get("windows", {}).items():
+        lines.append(_render_usage_window_bar(label, window if isinstance(window, dict) else {}))
+    for key, value in usage.items():
+        if key in ("plan", "windows"):
+            continue
+        if value in ({}, [], None):
+            continue
+        lines.append(_render_usage_block(key, value, 2))
+    return "\n".join(lines)
+
+
 def _format_human_usage(account_name, usage_data):
-    """Render usage data as human-readable lines."""
+    """Render usage data as human-readable lines.
+
+    A normalized quota payload (dict with a ``windows`` mapping) is drawn as
+    labeled progress bars; any other shape falls back to the generic nested
+    renderer so unusual payloads still surface their fields.
+    """
+    if isinstance(usage_data, dict) and isinstance(usage_data.get("windows"), dict):
+        return _render_usage_visual(account_name, usage_data)
     formatted = _format_usage_value(usage_data)
     lines = [f"{account_name}:"]
     for key, value in formatted.items():

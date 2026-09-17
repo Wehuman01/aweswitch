@@ -121,7 +121,7 @@ No more logging out just to log back in. No more counting browser authorization 
 
 aweswitch is part of the [Webioinfo](https://www.webioinfo.top/) ecosystem:
 
-- **[aweskill](https://aweskill.webioinfo.top/)** — CLI-first skill package manager for 47+ AI coding agents
+- **[aweskill](https://aweskill.wehuman.top/)** — CLI-first skill package manager for 47+ AI coding agents
 - **[aweshelf](https://github.com/wehuman01/aweshelf)** — AI coding session manager with profile-aware restore
 - **[awerouter](https://github.com/wehuman01/awerouter)** — smart LLM router: splits requests between Flash (cheap) and Pro (capable) providers based on structural signals
 - **[awescholar](https://github.com/wehuman01/awescholar)** — automated scientific literature discovery

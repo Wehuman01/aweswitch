@@ -194,6 +194,6 @@ The setup is a task. The agent does tasks. So I gave the task to the agent.
 
 aweswitch is part of the [Webioinfo](https://www.webioinfo.top/) ecosystem:
 
-- **[aweskill](https://aweskill.webioinfo.top/)** — CLI-first Skill package manager for 47+ AI coding agents
+- **[aweskill](https://aweskill.wehuman.top/)** — CLI-first Skill package manager for 47+ AI coding agents
 - **[aweshelf](https://github.com/wehuman01/aweshelf)** — AI coding session manager with profile-aware restoration
 - **[awescholar](https://github.com/wehuman01/awescholar)** — Automated scientific literature discovery

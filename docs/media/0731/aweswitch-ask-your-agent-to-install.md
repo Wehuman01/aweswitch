@@ -17,7 +17,7 @@ Most agent tools ship a `README.md` for humans and a separate `README.ai.md` for
 The `README.ai.md` is a six-step install contract written for the agent, not the user:
 
 1. `pip3 install aweswitch` and verify with `aweswitch -v`
-2. Install the `aweswitch` skill via [aweskill](https://aweskill.webioinfo.top/) (Option A) or direct copy of `SKILL.md` (Option B)
+2. Install the `aweswitch` skill via [aweskill](https://aweskill.wehuman.top/) (Option A) or direct copy of `SKILL.md` (Option B)
 3. `aweswitch config init` to create `~/.config/aweswitch/config.json`
 4. Read the existing config, add profiles under `profiles.claude` or `profiles.codex`
 5. Append the matching `export` lines to `~/.zshrc` (or `~/.bashrc`)
@@ -193,6 +193,6 @@ The agent already knows the answers. You just had not given it the README yet.
 
 aweswitch is part of the [Webioinfo](https://www.webioinfo.top/) ecosystem:
 
-- **[aweskill](https://aweskill.webioinfo.top/)** — CLI-first Skill package manager for 47+ AI coding agents
+- **[aweskill](https://aweskill.wehuman.top/)** — CLI-first Skill package manager for 47+ AI coding agents
 - **[aweshelf](https://github.com/wehuman01/aweshelf)** — AI coding session manager with profile-aware restoration
 - **[awescholar](https://github.com/wehuman01/awescholar)** — Automated scientific literature discovery

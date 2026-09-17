@@ -155,6 +155,6 @@ aweswitch cc-glm
 
 aweswitch 是 [Webioinfo](https://www.webioinfo.top/) 生态的一部分：
 
-- **[aweskill](https://aweskill.webioinfo.top/)** —— 为 47+ AI 编程 agent 打造的 CLI 优先 Skill 包管理器
+- **[aweskill](https://aweskill.wehuman.top/)** —— 为 47+ AI 编程 agent 打造的 CLI 优先 Skill 包管理器
 - **[aweshelf](https://github.com/wehuman01/aweshelf)** —— AI 编程会话管理器，支持按 profile 恢复
 - **[awescholar](https://github.com/wehuman01/awescholar)** —— 自动化的科研文献发现

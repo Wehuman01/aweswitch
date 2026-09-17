@@ -17,7 +17,7 @@ GitHub：[github.com/wehuman01/aweswitch](https://github.com/wehuman01/aweswitch
 `README.ai.md` 是一份六步的安装契约，写给 agent 而不是写给用户：
 
 1. `pip3 install aweswitch`，然后用 `aweswitch -v` 验证
-2. 通过 [aweskill](https://aweskill.webioinfo.top/) 安装 `aweswitch` 技能（方式 A），或者直接复制 `SKILL.md`（方式 B）
+2. 通过 [aweskill](https://aweskill.wehuman.top/) 安装 `aweswitch` 技能（方式 A），或者直接复制 `SKILL.md`（方式 B）
 3. 运行 `aweswitch config init` 创建 `~/.config/aweswitch/config.json`
 4. 读取已有配置，在 `profiles.claude` 或 `profiles.codex` 下添加 profile
 5. 把对应的 `export` 行追加到 `~/.zshrc`（或 `~/.bashrc`）
@@ -181,6 +181,6 @@ agent 已经知道答案。你只是还没把那份 README 递给它。
 
 aweswitch 是 [Webioinfo](https://www.webioinfo.top/) 生态的一部分：
 
-- **[aweskill](https://aweskill.webioinfo.top/)** — 面向 47+ AI 编码 agent 的 CLI 优先技能管理器
+- **[aweskill](https://aweskill.wehuman.top/)** — 面向 47+ AI 编码 agent 的 CLI 优先技能管理器
 - **[aweshelf](https://github.com/wehuman01/aweshelf)** — 带 profile 感知恢复的 AI 编码会话管理器
 - **[awescholar](https://github.com/wehuman01/awescholar)** — 自动化科学文献发现

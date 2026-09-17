@@ -5495,7 +5495,37 @@ class AweSwitchTests(unittest.TestCase):
         self.assertIn("tokens", result.output)
         self.assertIn("06:13:20", result.output)
 
-    def test_usage_partial_failure_renders_all_and_exits_nonzero(self):
+    def test_usage_visual_progress_bar_rendering(self):
+        import time
+        now = int(time.time())
+        three_days = int(now + 3 * 86400)
+        payload = {
+            "plan": "pro",
+            "windows": {
+                "primary": {"used_percentage": 100, "window_minutes": 300, "reset_unix_timestamp": now + 3600},
+                "secondary": {"used_percentage": 88, "window_minutes": 10080, "reset_unix_timestamp": three_days},
+            },
+            "credits": {"has_credits": True, "balance": 12},
+        }
+        out = aweswitch._format_human_usage("cxo-work", payload)
+        self.assertIn("cxo-work:", out)
+        self.assertIn("Plan: pro", out)
+        self.assertIn("5h limit", out)
+        self.assertIn("Weekly limit", out)
+        self.assertIn("0% left", out)
+        self.assertIn("12% left", out)
+        self.assertIn("resets", out)
+        self.assertIn("\u2588", out)
+        self.assertIn("credits", out)
+
+    def test_usage_progress_helpers(self):
+        bar, remaining = aweswitch._usage_progress(88)
+        self.assertEqual(remaining, 12)
+        self.assertEqual(bar.count("\u2588"), 2)
+        self.assertIsNone(aweswitch._usage_reset_text(None))
+        self.assertIsNone(aweswitch._usage_reset_text("nope"))
+        self.assertEqual(aweswitch._usage_window_label("primary", {"window_minutes": 300}), "5h limit")
+        self.assertEqual(aweswitch._usage_window_label("x", {"window_minutes": 10080}), "Weekly limit")
         with tempfile.TemporaryDirectory() as tmp:
             config_file = Path(tmp) / "config.json"
             config_file.write_text(json.dumps({

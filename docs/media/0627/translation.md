@@ -252,6 +252,6 @@ aweswitch 和 Claude Code、Codex、 OpenCode 之间的分工还是没变。awes
 
 aweswitch 是 [Webioinfo](https://www.webioinfo.top/) （域名现在从we.webioinfo.top 现在变成了www.webioinfo.top ）生态的一部分：
 
-- **[aweskill](https://aweskill.webioinfo.top/)** — 面向 47+ AI 编程智能体的 CLI 优先 Skill 包管理器
+- **[aweskill](https://aweskill.wehuman.top/)** — 面向 47+ AI 编程智能体的 CLI 优先 Skill 包管理器
 - **[aweshelf](https://github.com/wehuman01/aweshelf)** — 支持配置感知恢复的 AI 编程会话管理器
 - **[awescholar](https://github.com/wehuman01/awescholar)** — 自动化科学文献发现
