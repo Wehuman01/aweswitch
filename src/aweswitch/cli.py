@@ -3149,7 +3149,9 @@ def _usage_compact_count(value):
         if abs(number) >= scale:
             compact = f"{number / scale:.1f}".rstrip("0").rstrip(".")
             return compact + unit
-    return str(int(number))
+    if number == int(number):
+        return str(int(number))
+    return f"{number:.2f}".rstrip("0").rstrip(".")
 
 
 def _usage_compact_duration(seconds):

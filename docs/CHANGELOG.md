@@ -11,7 +11,7 @@
 - `--json` outputs the normalized payload; sensitive credential fields are redacted
 - `--all-codex` flag queries every Codex official account in one call
 - Per-account errors surface cleanly (`account: error: ...`) without aborting the whole run
-- New `src/aweswitch/usage.py` module: credential loading from `auth.json` or account blob, quota fetch via Codex's `/me/subscriptions` endpoint, payload normalization into `windows` / `plan` / top-level fields
+- New `src/aweswitch/usage.py` module: credential loading from `auth.json` or account blob, quota fetch via Codex's `/backend-api/wham/usage` endpoint (plus best-effort `/backend-api/wham/profiles/me`), payload normalization into `plan` / `windows` / `credits` / `token_profile`
 - `reset_unix_timestamp` converted to local time in human output; bare-number credits accepted; top-level `token_profile` surfaced
 - Credential loading hardened: access token validated as non-empty string, fallback blob accepted, never writes files
 - CLI integration: `usage` registered as a reserved profile name, errors redacted via existing `SECRET_RE` pattern, `--json` flag handled alongside the command's own `--json`
