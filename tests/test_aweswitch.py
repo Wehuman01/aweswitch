@@ -5350,6 +5350,214 @@ class AweSwitchTests(unittest.TestCase):
     def test_should_skip_empty_args(self):
         self.assertTrue(update_check._should_skip([]))
 
+    def test_usage_help_visible(self):
+        result = CliRunner().invoke(aweswitch.cli, ["usage", "--help"])
+
+        self.assertEqual(result.exit_code, 0)
+        self.assertIn("Usage: aweswitch usage", result.output)
+        self.assertIn("--all-codex", result.output)
+        self.assertIn("--json", result.output)
+
+    def test_usage_no_selector_shows_guidance(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            config_file = Path(tmp) / "config.json"
+            aweswitch.init_config(config_file)
+
+            result = CliRunner().invoke(
+                aweswitch.cli, ["usage"],
+                env={"AWESWITCH_CONFIG": str(config_file)},
+            )
+
+        self.assertEqual(result.exit_code, 0)
+        self.assertIn("No account selector given", result.output)
+        self.assertIn("--all-codex", result.output)
+
+    def test_usage_all_codex_selects_accounts(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            config_file = Path(tmp) / "config.json"
+            config_file.write_text(json.dumps({
+                "profiles": {"api": {}, "accounts": {"codex": {
+                    "cxo-a": {"auth": {"tokens": {"access_token": "a"}}},
+                    "cxo-b": {"auth": {"tokens": {"access_token": "b"}}},
+                }}},
+            }) + "\n")
+            mock_usage = unittest.mock.MagicMock()
+            mock_usage.UsageError = type("UsageError", (Exception,), {})
+            mock_usage.load_codex_credentials.return_value = {"tokens": {"access_token": "tok"}}
+            mock_usage.fetch_codex_usage.return_value = {
+                "plan": "free",
+                "credits": {"used": 1, "limit": 10},
+            }
+
+            with unittest.mock.patch.dict(sys.modules, {"aweswitch.usage": mock_usage}):
+                result = CliRunner().invoke(
+                    aweswitch.cli, ["usage", "--all-codex"],
+                    env={"AWESWITCH_CONFIG": str(config_file)},
+                )
+
+        self.assertEqual(result.exit_code, 0, result.output)
+        self.assertIn("cxo-a", result.output)
+        self.assertIn("cxo-b", result.output)
+        self.assertIn("free", result.output)
+        mock_usage.load_codex_credentials.assert_any_call(
+            config_file.parent / "accounts" / "codex" / "cxo-a" / "auth.json",
+            {"tokens": {"access_token": "a"}},
+        )
+
+    def test_usage_all_codex_exits_usefully_when_none(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            config_file = Path(tmp) / "config.json"
+            aweswitch.init_config(config_file)
+
+            result = CliRunner().invoke(
+                aweswitch.cli, ["usage", "--all-codex"],
+                env={"AWESWITCH_CONFIG": str(config_file)},
+            )
+
+        self.assertEqual(result.exit_code, 0)
+        self.assertIn("No Codex official accounts found", result.output)
+
+    def test_usage_rejects_api_profile(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            config_file = Path(tmp) / "config.json"
+            config_file.write_text(json.dumps({
+                "profiles": {"api": {"codex": {
+                    "cx-api": {"env": {"OPENAI_BASE_URL": "https://x", "OPENAI_API_KEY": "k"}},
+                }}, "accounts": {}},
+            }) + "\n")
+
+            result = CliRunner().invoke(
+                aweswitch.cli, ["usage", "cx-api"],
+                env={"AWESWITCH_CONFIG": str(config_file)},
+            )
+
+        self.assertNotEqual(result.exit_code, 0)
+        self.assertIn("API profile", result.output)
+
+    def test_usage_rejects_claude_account(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            config_file = Path(tmp) / "config.json"
+            config_file.write_text(json.dumps({
+                "profiles": {"api": {}, "accounts": {"claude": {
+                    "cco-work": {"credentials": {"claudeAiOauth": {}}},
+                }}},
+            }) + "\n")
+
+            result = CliRunner().invoke(
+                aweswitch.cli, ["usage", "cco-work"],
+                env={"AWESWITCH_CONFIG": str(config_file)},
+            )
+
+        self.assertNotEqual(result.exit_code, 0)
+        self.assertIn("claude official account", result.output)
+
+    def test_usage_rejects_names_with_all_codex(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            config_file = Path(tmp) / "config.json"
+            aweswitch.init_config(config_file)
+
+            result = CliRunner().invoke(
+                aweswitch.cli, ["usage", "cxo-work", "--all-codex"],
+                env={"AWESWITCH_CONFIG": str(config_file)},
+            )
+
+        self.assertNotEqual(result.exit_code, 0)
+        self.assertIn("pass account names or --all-codex, not both", result.output)
+
+    def test_usage_success_renders_human_output(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            config_file = Path(tmp) / "config.json"
+            config_file.write_text(json.dumps({
+                "profiles": {"api": {}, "accounts": {"codex": {
+                    "cxo-work": {"auth": {"tokens": {"access_token": "tok"}}},
+                }}},
+            }) + "\n")
+            mock_usage = unittest.mock.MagicMock()
+            mock_usage.UsageError = type("UsageError", (Exception,), {})
+            mock_usage.load_codex_credentials.return_value = {"tokens": {"access_token": "tok"}}
+            mock_usage.fetch_codex_usage.return_value = {
+                "plan": "pro",
+                "windows": [{"reset": 1700000000, "limit": 100}],
+                "credits": {"used": 5},
+                "tokens": {"used": 1000},
+            }
+
+            with unittest.mock.patch.dict(sys.modules, {"aweswitch.usage": mock_usage}):
+                result = CliRunner().invoke(
+                    aweswitch.cli, ["usage", "cxo-work"],
+                    env={"AWESWITCH_CONFIG": str(config_file)},
+                )
+
+        self.assertEqual(result.exit_code, 0, result.output)
+        self.assertIn("cxo-work:", result.output)
+        self.assertIn("plan: pro", result.output)
+        self.assertIn("credits", result.output)
+        self.assertIn("tokens", result.output)
+        self.assertIn("06:13:20", result.output)
+
+    def test_usage_partial_failure_renders_all_and_exits_nonzero(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            config_file = Path(tmp) / "config.json"
+            config_file.write_text(json.dumps({
+                "profiles": {"api": {}, "accounts": {"codex": {
+                    "cxo-ok": {"auth": {"tokens": {"access_token": "ok"}}},
+                    "cxo-fail": {"auth": {"tokens": {"access_token": "fail"}}},
+                }}},
+            }) + "\n")
+            mock_usage = unittest.mock.MagicMock()
+            mock_usage.UsageError = type("UsageError", (Exception,), {})
+
+            def fake_load(path, blob):
+                name = path.parent.name
+                if name == "cxo-ok":
+                    return {"tokens": {"access_token": "ok"}}
+                raise mock_usage.UsageError("quota endpoint down")
+
+            mock_usage.load_codex_credentials.side_effect = fake_load
+            mock_usage.fetch_codex_usage.return_value = {"plan": "free"}
+
+            with unittest.mock.patch.dict(sys.modules, {"aweswitch.usage": mock_usage}):
+                result = CliRunner().invoke(
+                    aweswitch.cli, ["usage", "cxo-ok", "cxo-fail"],
+                    env={"AWESWITCH_CONFIG": str(config_file)},
+                )
+
+        self.assertNotEqual(result.exit_code, 0)
+        self.assertIn("cxo-ok:", result.output)
+        self.assertIn("free", result.output)
+        self.assertIn("cxo-fail: error: quota endpoint down", result.output)
+
+    def test_usage_json_no_secret_result(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            config_file = Path(tmp) / "config.json"
+            config_file.write_text(json.dumps({
+                "profiles": {"api": {}, "accounts": {"codex": {
+                    "cxo-work": {"auth": {"tokens": {"access_token": "tok"}}},
+                }}},
+            }) + "\n")
+            mock_usage = unittest.mock.MagicMock()
+            mock_usage.UsageError = type("UsageError", (Exception,), {})
+            mock_usage.load_codex_credentials.return_value = {"tokens": {"access_token": "tok"}}
+            mock_usage.fetch_codex_usage.return_value = {
+                "plan": "pro",
+                "credits": {"api_key": "secret123", "used": 5},
+                "windows": [{"reset": 1700000000}],
+            }
+
+            with unittest.mock.patch.dict(sys.modules, {"aweswitch.usage": mock_usage}):
+                result = CliRunner().invoke(
+                    aweswitch.cli, ["usage", "--json", "cxo-work"],
+                    env={"AWESWITCH_CONFIG": str(config_file)},
+                )
+
+        self.assertEqual(result.exit_code, 0, result.output)
+        parsed = json.loads(result.output)
+        self.assertEqual(len(parsed), 1)
+        self.assertEqual(parsed[0]["account"], "cxo-work")
+        self.assertIn("usage", parsed[0])
+        self.assertEqual(parsed[0]["usage"]["credits"]["api_key"], "<redacted>")
+        self.assertNotIn("access_token", json.dumps(parsed))
+
 
 if __name__ == "__main__":
     unittest.main()
