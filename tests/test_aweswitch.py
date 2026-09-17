@@ -5477,7 +5477,7 @@ class AweSwitchTests(unittest.TestCase):
             mock_usage.load_codex_credentials.return_value = {"tokens": {"access_token": "tok"}}
             mock_usage.fetch_codex_usage.return_value = {
                 "plan": "pro",
-                "windows": [{"reset": 1700000000, "limit": 100}],
+                "windows": {"5h": {"used_percentage": 50, "window_minutes": 300, "reset_unix_timestamp": int(time.time()) + 3600}},
                 "credits": {"used": 5},
                 "tokens": {"used": 1000},
             }
@@ -5493,7 +5493,7 @@ class AweSwitchTests(unittest.TestCase):
         self.assertIn("plan: pro", result.output)
         self.assertIn("credits", result.output)
         self.assertIn("tokens", result.output)
-        self.assertIn("06:13:20", result.output)
+        self.assertIn("resets", result.output)
 
     def test_usage_visual_progress_bar_rendering(self):
         import time
