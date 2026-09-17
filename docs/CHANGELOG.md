@@ -1,5 +1,24 @@
 # change log
 
+## v0.7.1 - 2026-09-17
+
+`aweswitch usage` shows quota usage for Codex official accounts — remaining credits, per-window limits with progress bars, and reset times — in human-readable or JSON output. The new `usage` command reads the same auth credentials `apply` and `account login` already manage, so no extra setup is needed.
+
+<details><summary>Highlights</summary>
+
+- New `aweswitch usage [accounts...]` command: pass account names or `--all-codex` to select every official account
+- Human output renders each quota window as a labeled progress bar (`[ ████··· ] 73% left (resets 09:00 on 18 Sep)`)
+- `--json` outputs the normalized payload; sensitive credential fields are redacted
+- `--all-codex` flag queries every Codex official account in one call
+- Per-account errors surface cleanly (`account: error: ...`) without aborting the whole run
+- New `src/aweswitch/usage.py` module: credential loading from `auth.json` or account blob, quota fetch via Codex's `/me/subscriptions` endpoint, payload normalization into `windows` / `plan` / top-level fields
+- `reset_unix_timestamp` converted to local time in human output; bare-number credits accepted; top-level `token_profile` surfaced
+- Credential loading hardened: access token validated as non-empty string, fallback blob accepted, never writes files
+- CLI integration: `usage` registered as a reserved profile name, errors redacted via existing `SECRET_RE` pattern, `--json` flag handled alongside the command's own `--json`
+- Full test coverage: `tests/test_usage.py` (transport stubs, credential edge cases, payload normalization, progress bar math, window labels) and `tests/test_aweswitch.py` (CLI wiring, `--all-codex`, redaction, error paths)
+
+</details>
+
 ## v0.7.0 - 2026-09-13
 
 OpenCode/zcode subagent pins move out of profile envs into a top-level `subagents` section beside `profiles` — agent files outlive any profile, so their pins no longer hang off one. Each target gets its own map: `subagents.opencode` and `subagents.zcode`, `{agent-name: "profile/model-id"}`. The value is the exact string the agent file's `model:` line gets; the named profile must be a same-target api profile listing that model, and every apply ensures those providers. zcode's two built-in names (`general-purpose`, `Explore`) now take per-agent entries in the same map — pinning them to different models, alongside user subagents, is finally expressible. Old configs keep working: `OPENCODE_SUBAGENT_MODEL` / `ZCODE_SUBAGENT_MODEL` in a profile's env are migrated into the section on first load (config rewritten with a `.json.bak` backup; `@profile/model` refs and the zcode scalar form are expanded). Declared subagents are also fully managed now, the way providers align to profiles: a name whose agent file is missing is created from a generic template (description and prompt body are boilerplate — only the `model:` line differs), and an entry removed from the section deletes a template-created file on the next apply, while user-authored files keep the old contract — only their frontmatter `model:` line is pinned or released, never the rest of the file.

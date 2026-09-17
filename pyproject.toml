@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aweswitch"
-version = "0.7.0"
+version = "0.7.1"
 description = "A tiny local launcher for switching AI agent runtime profiles."
 readme = "README.md"
 requires-python = ">=3.9"
