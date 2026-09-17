@@ -248,6 +248,7 @@ List all my aweswitch profiles and show what cc-glm points to.
 ```bash
 aweswitch list                        # list all profiles (api + account kinds)
 aweswitch show cc-glm                 # inspect one profile (secrets redacted)
+aweswitch usage cxo-work              # show quota usage for a Codex official account
 aweswitch config path                 # print config file path
 aweswitch config show                 # full config (secrets redacted)
 aweswitch config edit                 # open the config in an editor
@@ -427,6 +428,8 @@ aweswitch account add claude team-a   # import the currently logged-in claude ac
 aweswitch cxo-work                    # launch codex with the "work" account
 aweswitch account sync codex work     # copy refreshed tokens back into the config
 aweswitch account remove codex work --purge
+aweswitch usage cxo-work              # show quota usage for a Codex official account
+aweswitch usage --all-codex           # show quota usage for every Codex official account
 ```
 
 `aweswitch add` → type `official` is the interactive route to the same two flows: it asks for provider, account name, and method (`login` runs the OAuth flow, `import` reads the current CLI login).
@@ -437,6 +440,7 @@ How it works:
 - The account dir is the source of truth once it exists — the CLI refreshes OAuth tokens there, and an existing credentials file is never overwritten by the stored blob. Run `aweswitch account sync` to refresh the config copy for backup/portability.
 - On macOS, Claude Code keeps its login in the Keychain by default; `account login` / launches force file-based credentials inside the account dir so accounts stay isolated. `account add` reads `~/.claude/.credentials.json` and only works when that file exists — prefer `account login` on macOS.
 - Accounts are launch-only: they don't participate in `apply` mode.
+- `aweswitch usage <codex-account>` reads the Codex official account's quota usage. Only Codex official accounts expose a compatible quota API; GLM and Doubao remain dashboard-only. API-key Codex profiles are not supported.
 - Sessions are isolated per account by default: each account dir keeps its own `sessions/`, so `codex resume` only finds sessions recorded by that account. Set `"share_sessions": true` (top level of `config.json`) to pool Codex sessions across accounts. On the next launch, each Codex account's `sessions/` and `archived_sessions/` become links into a shared pool under `~/.config/aweswitch/accounts/codex/.shared/`, and existing rollout files are migrated in automatically. Any account can then resume any session — `aweswitch cxo-peng resume <id>` works for a session recorded by `cxo-heck` — and the `codex resume` picker lists every account's sessions (use `--all` to lift the cwd filter). The default Codex home joins the pool too: sessions recorded by plain `codex` or a `cx-*` api-profile launch land in `~/.codex/sessions`, which becomes a pool link on the next Codex launch, so those sessions are resumable under every account — and pooled sessions under plain codex. Turning the flag off unlinks the accounts and the default home again; files already in the pool stay there, since rollout files carry no account identity. Claude accounts are not pooled yet.
 
 </details>
