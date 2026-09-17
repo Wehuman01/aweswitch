@@ -12,7 +12,7 @@
 
 说完就下楼取快递去了，顺手把门口的垃圾也捎了下去。等我拎着箱子爬回楼上，`aweswitch list` 里已经多了几行 kind 列标着 `account` 的条目。公司号和个人号都在里面，谁也不挤占谁的登录态。
 
-GitHub：[github.com/Webioinfo01/aweswitch](https://github.com/Webioinfo01/aweswitch)
+GitHub：[github.com/wehuman01/aweswitch](https://github.com/wehuman01/aweswitch)
 
 ## v0.4.0：官方账号是一等公民
 
@@ -80,7 +80,7 @@ aweswitch cco-personal    # 终端 2：个人的 Claude 号，同时在跑
 
 v0.3.7 到 v0.3.9 的更新也随这个版本一起到货，一句话带过：Codex profile 现在支持启动时直接选第三方模型（`aweswitch cx-aihubmix kimi-k2.7`）、OpenCode 凭据变更自动同步不再报错、明文 API key 从硬性拒绝放宽为提示、外加一轮针对损坏配置和后台进程的稳定性加固。
 
-细节都在 [CHANGELOG](https://github.com/Webioinfo01/aweswitch/blob/main/docs/CHANGELOG.md) 里。
+细节都在 [CHANGELOG](https://github.com/wehuman01/aweswitch/blob/main/docs/CHANGELOG.md) 里。
 
 ## 试一下
 
@@ -89,7 +89,7 @@ v0.3.7 到 v0.3.9 的更新也随这个版本一起到货，一句话带过：Co
 如果你在 Claude Code、Codex 或其他编程 agent 里，跟它说：
 
 ```text
-Read https://github.com/Webioinfo01/aweswitch/blob/main/README.ai.md and follow it to install and configure aweswitch.
+Read https://github.com/wehuman01/aweswitch/blob/main/README.ai.md and follow it to install and configure aweswitch.
 ```
 
 ### 或者自己动手
@@ -127,12 +127,12 @@ aweshare 是一个不断壮大的 "awesome" 工具家族的一部分 — CLI 优
 ### CLI 工具
 
 - **[aweskill](https://aweskill.webioinfo.top/)** — CLI 优先的技能包管理器，支持 47+ AI 编程 agent。
-- **[aweswitch](https://github.com/Webioinfo01/aweswitch)** — Claude Code、Codex 和 OpenCode 的 agent 配置切换器。
-- **[awerouter](https://github.com/mugpeng/awerouter)** — 智能路由器，使用结构信号在 Flash 和 Pro 模型之间分配请求，减少不必要的模型开销。
-- **[aweshelf](https://github.com/Webioinfo01/aweshelf)** — 收藏、分类和恢复 AI 编程会话；与 aweswitch 配合保存配置并一键启动。
+- **[aweswitch](https://github.com/wehuman01/aweswitch)** — Claude Code、Codex 和 OpenCode 的 agent 配置切换器。
+- **[awerouter](https://github.com/wehuman01/awerouter)** — 智能路由器，使用结构信号在 Flash 和 Pro 模型之间分配请求，减少不必要的模型开销。
+- **[aweshelf](https://github.com/wehuman01/aweshelf)** — 收藏、分类和恢复 AI 编程会话；与 aweswitch 配合保存配置并一键启动。
 - **[aweshare](https://github.com/wehuman01/aweshare)** — 通过自建 Hub 共享本地 Ollama/vLLM 后端、国内编程计划或授权的 OpenAI/Anthropic 订阅 — token 的共享经济。
 - **[awewarm](https://github.com/wehuman01/awewarm)** — 订阅窗口保温器，保持 AI 编程套餐窗口激活，适用于本地设置和远程 hub 服务器。
-- **[awescholar](https://github.com/Webioinfo01/awescholar)** — 可由 AI agent 操作的科学文献发现和整理工具。
+- **[awescholar](https://github.com/wehuman01/awescholar)** — 可由 AI agent 操作的科学文献发现和整理工具。
 
 ### 桌面应用
 

@@ -2,13 +2,13 @@
 
 ![aweswitch](../../../logo/hero.png)
 
-我对我的编码 agent 说了一句话："读一下 https://github.com/Webioinfo01/aweswitch/blob/main/README.ai.md，按里面的步骤来。"然后我去泡了杯咖啡。
+我对我的编码 agent 说了一句话："读一下 https://github.com/wehuman01/aweswitch/blob/main/README.ai.md，按里面的步骤来。"然后我去泡了杯咖啡。
 
 等我回来，aweswitch 已经装好了，技能也注册上了，配置初始化完成，三条 profile 已经就位：`cc-glm`、`cc-xiaomi`、`cx-openai`。它还发现我的 `~/.zshrc` 里没有 `OPENAI_API_KEY`，问我要了令牌，并把它写到了正确的位置。
 
 这就是安装一个 agent 工具的新形态。安装本身是一项任务。agent 干任务。所以我把任务派给了 agent。
 
-GitHub：[github.com/Webioinfo01/aweswitch](https://github.com/Webioinfo01/aweswitch)
+GitHub：[github.com/wehuman01/aweswitch](https://github.com/wehuman01/aweswitch)
 
 ## 安装：一份给 agent 读的 README
 
@@ -27,7 +27,7 @@ GitHub：[github.com/Webioinfo01/aweswitch](https://github.com/Webioinfo01/awesw
 
 在 Claude Code、Codex、Cursor 或 aweskill 支持的 47+ agent 中，提示语都是同一句：
 
-> "读一下 https://github.com/Webioinfo01/aweswitch/blob/main/README.ai.md，按里面的步骤安装并配置 aweswitch。"
+> "读一下 https://github.com/wehuman01/aweswitch/blob/main/README.ai.md，按里面的步骤安装并配置 aweswitch。"
 
 agent 会做剩下的事。它会跑 `pip3 install`、装上技能、初始化配置、改 `~/.zshrc`，然后汇报结果。如果中间出问题——Node.js 没装、Python 版本太老、已有配置里有你不想覆盖的 profile——它会停下来问你，而不是悄悄搞坏什么。
 
@@ -133,7 +133,7 @@ aweswitch 不管 agent 文件本身——那是 OpenCode 的事。aweswitch 管�
 
 profile 只是问题的一半。另一半是记住"哪条会话当时跑在哪个 profile 上"。
 
-[aweshelf](https://github.com/Webioinfo01/aweshelf) 是会话书签的配套工具。启动时的 `-c` 和 `-t` 标志会自动把书签交给 aweshelf：
+[aweshelf](https://github.com/wehuman01/aweshelf) 是会话书签的配套工具。启动时的 `-c` 和 `-t` 标志会自动把书签交给 aweshelf：
 
 ```bash
 aweswitch cc-glm -c backend -t "修复 auth bug"
@@ -165,7 +165,7 @@ agent 工具的未来不是"对 agent 友好"（agent-friendly）的工具，是
 
 对你的 agent 说：
 
-> "读一下 https://github.com/Webioinfo01/aweswitch/blob/main/README.ai.md，按里面的步骤来。"
+> "读一下 https://github.com/wehuman01/aweswitch/blob/main/README.ai.md，按里面的步骤来。"
 
 然后在技能列表里看看 `/aweswitch` 有没有出现。如果出现了，离加一条新 profile 就剩三十秒。如果没有，重启 agent。
 
@@ -182,5 +182,5 @@ agent 已经知道答案。你只是还没把那份 README 递给它。
 aweswitch 是 [Webioinfo](https://www.webioinfo.top/) 生态的一部分：
 
 - **[aweskill](https://aweskill.webioinfo.top/)** — 面向 47+ AI 编码 agent 的 CLI 优先技能管理器
-- **[aweshelf](https://github.com/Webioinfo01/aweshelf)** — 带 profile 感知恢复的 AI 编码会话管理器
-- **[awescholar](https://github.com/Webioinfo01/awescholar)** — 自动化科学文献发现
+- **[aweshelf](https://github.com/wehuman01/aweshelf)** — 带 profile 感知恢复的 AI 编码会话管理器
+- **[awescholar](https://github.com/wehuman01/awescholar)** — 自动化科学文献发现

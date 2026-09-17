@@ -10,11 +10,11 @@ You close a terminal. The next day you need that GLM debugging session again. Yo
 
 These are small frictions. But they add up. Recent updates have been quietly eliminating them.
 
-GitHub: [github.com/Webioinfo01/aweswitch](https://github.com/Webioinfo01/aweswitch)
+GitHub: [github.com/wehuman01/aweswitch](https://github.com/wehuman01/aweswitch)
 
 ## Auto-Bookmarks
 
-[aweshelf](https://github.com/Webioinfo01/aweshelf) is a session bookmark manager for Claude Code and Codex CLI — save, tag, search, and resume past coding sessions. (For a deeper look, see [aweshelf: 像整理抽屉一样轻松收纳agent会话](https://mp.weixin.qq.com/s/ifUFVG3UTOu4PU18wggAqA).)
+[aweshelf](https://github.com/wehuman01/aweshelf) is a session bookmark manager for Claude Code and Codex CLI — save, tag, search, and resume past coding sessions. (For a deeper look, see [aweshelf: 像整理抽屉一样轻松收纳agent会话](https://mp.weixin.qq.com/s/ifUFVG3UTOu4PU18wggAqA).)
 
 With aweswitch, aweshelf integration is now seamless. Bookmarking a session used to be a manual step: find the session ID, run `aweshelf bookmark`. In practice, you always forgot.
 
@@ -142,5 +142,5 @@ These are not flashy features. They do not change how aweswitch switches profile
 aweswitch is part of the [Webioinfo](https://www.webioinfo.top/) ecosystem:
 
 - **[aweskill](https://aweskill.webioinfo.top/)** — CLI-first Skill package manager for 47+ AI coding agents
-- **[aweshelf](https://github.com/Webioinfo01/aweshelf)** — AI coding session manager with profile-aware restoration
-- **[awescholar](https://github.com/Webioinfo01/awescholar)** — Automated scientific literature discovery
+- **[aweshelf](https://github.com/wehuman01/aweshelf)** — AI coding session manager with profile-aware restoration
+- **[awescholar](https://github.com/wehuman01/awescholar)** — Automated scientific literature discovery

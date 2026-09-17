@@ -4,7 +4,7 @@
 
 aweswitch has evolved from a Claude Code profile switcher into a cross-platform agent profile manager. The latest release introduces a new way to switch profiles without launching a new process, alongside broader platform and provider support.
 
-GitHub: [github.com/Webioinfo01/aweswitch](https://github.com/Webioinfo01/aweswitch)
+GitHub: [github.com/wehuman01/aweswitch](https://github.com/wehuman01/aweswitch)
 
 ## Apply Mode
 
@@ -211,5 +211,5 @@ The core principle remains: named profiles, runtime injection, no global config 
 aweswitch is part of the [Webioinfo](https://www.webioinfo.top/) ecosystem:
 
 - **[aweskill](https://aweskill.webioinfo.top/)** — CLI-first Skill package manager for 47+ AI coding agents
-- **[aweshelf](https://github.com/Webioinfo01/aweshelf)** — AI coding session manager with profile-aware restoration
-- **[awescholar](https://github.com/Webioinfo01/awescholar)** — Automated scientific literature discovery
+- **[aweshelf](https://github.com/wehuman01/aweshelf)** — AI coding session manager with profile-aware restoration
+- **[awescholar](https://github.com/wehuman01/awescholar)** — Automated scientific literature discovery

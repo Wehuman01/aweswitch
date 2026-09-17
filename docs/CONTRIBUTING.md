@@ -9,7 +9,7 @@ The project should stay focused on that job. Prefer changes that make profile sw
 Clone the repository and run the tests:
 
 ```bash
-git clone https://github.com/Webioinfo01/aweswitch.git
+git clone https://github.com/wehuman01/aweswitch.git
 cd aweswitch
 python3 -m pip install -e .
 python3 tests/test_aweswitch.py
@@ -90,7 +90,7 @@ Current rules:
 
 ## aweshelf Integration: How it Works
 
-aweswitch supports auto-bookmarking sessions via [aweshelf](https://github.com/Webioinfo01/aweshelf) using `-c` (category) and `-t` (title) flags.
+aweswitch supports auto-bookmarking sessions via [aweshelf](https://github.com/wehuman01/aweshelf) using `-c` (category) and `-t` (title) flags.
 
 ### Architecture
 

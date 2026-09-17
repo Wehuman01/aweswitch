@@ -4,7 +4,7 @@
 
 aweswitch has evolved from a profile switcher into a cross-platform agent profile manager. The latest release adds OpenCode as a first-class provider, pairs it with OpenCode's native `@` agent calling, and rounds out the platform with security and portability fixes.
 
-GitHub: [github.com/Webioinfo01/aweswitch](https://github.com/Webioinfo01/aweswitch)
+GitHub: [github.com/wehuman01/aweswitch](https://github.com/wehuman01/aweswitch)
 
 ## OpenCode Provider
 
@@ -242,5 +242,5 @@ The core principle carries over from day one: named profiles, runtime injection,
 aweswitch is part of the [Webioinfo](https://www.webioinfo.top/) ecosystem:
 
 - **[aweskill](https://aweskill.webioinfo.top/)** — CLI-first Skill package manager for 47+ AI coding agents
-- **[aweshelf](https://github.com/Webioinfo01/aweshelf)** — AI coding session manager with profile-aware restoration
-- **[awescholar](https://github.com/Webioinfo01/awescholar)** — Automated scientific literature discovery
+- **[aweshelf](https://github.com/wehuman01/aweshelf)** — AI coding session manager with profile-aware restoration
+- **[awescholar](https://github.com/wehuman01/awescholar)** — Automated scientific literature discovery

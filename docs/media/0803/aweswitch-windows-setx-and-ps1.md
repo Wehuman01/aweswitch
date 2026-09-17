@@ -10,7 +10,7 @@ When I came back, the token was in the user environment, the profile launched cl
 
 That is the new shape of Windows support for an agent tool. The bug is in the docs, not the code. The agent reads the docs. So I gave the task to the agent.
 
-GitHub: [github.com/Webioinfo01/aweswitch](https://github.com/Webioinfo01/aweswitch)
+GitHub: [github.com/wehuman01/aweswitch](https://github.com/wehuman01/aweswitch)
 
 ## The Bug: One Shell Sees, the Other Doesn't
 
@@ -195,5 +195,5 @@ The setup is a task. The agent does tasks. So I gave the task to the agent.
 aweswitch is part of the [Webioinfo](https://www.webioinfo.top/) ecosystem:
 
 - **[aweskill](https://aweskill.webioinfo.top/)** — CLI-first Skill package manager for 47+ AI coding agents
-- **[aweshelf](https://github.com/Webioinfo01/aweshelf)** — AI coding session manager with profile-aware restoration
-- **[awescholar](https://github.com/Webioinfo01/awescholar)** — Automated scientific literature discovery
+- **[aweshelf](https://github.com/wehuman01/aweshelf)** — AI coding session manager with profile-aware restoration
+- **[awescholar](https://github.com/wehuman01/awescholar)** — Automated scientific literature discovery

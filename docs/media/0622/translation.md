@@ -12,7 +12,7 @@
 
 aweswitch 已经从 Claude Code 配置切换工具，进化为跨平台的 AI 编码代理配置管理器。最新版本引入了一种无需启动新进程即可切换配置的方式，同时扩展了平台和提供商支持。
 
-GitHub：[github.com/Webioinfo01/aweswitch](https://github.com/Webioinfo01/aweswitch)
+GitHub：[github.com/wehuman01/aweswitch](https://github.com/wehuman01/aweswitch)
 
 ## 应用模式
 
@@ -227,5 +227,5 @@ aweswitch 最初是配置切换工具。解决了在不破坏打开会话的情�
 aweswitch 是 [Webioinfo](https://www.webioinfo.top/) 生态系统的一部分：
 
 - **[aweskill](https://aweskill.webioinfo.top/)** — 面向 47+ AI 编码代理的 CLI 优先 Skill 包管理器
-- **[aweshelf](https://github.com/Webioinfo01/aweshelf)** — 支持配置感知恢复的 AI 编码会话管理器
-- **[awescholar](https://github.com/Webioinfo01/awescholar)** — 自动化科学文献发现
+- **[aweshelf](https://github.com/wehuman01/aweshelf)** — 支持配置感知恢复的 AI 编码会话管理器
+- **[awescholar](https://github.com/wehuman01/awescholar)** — 自动化科学文献发现

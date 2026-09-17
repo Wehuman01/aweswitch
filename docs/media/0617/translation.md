@@ -10,11 +10,11 @@
 
 这些都是小摩擦，但日积月累。最近的几次更新，正在悄悄抹平它们。
 
-GitHub: [github.com/Webioinfo01/aweswitch](https://github.com/Webioinfo01/aweswitch)
+GitHub: [github.com/wehuman01/aweswitch](https://github.com/wehuman01/aweswitch)
 
 ## 自动书签
 
-[aweshelf](https://github.com/Webioinfo01/aweshelf) 是 Claude Code 和 Codex CLI 的 session 书签管理器——保存、标记、搜索、恢复，管理你的编程 session 历史。（更详细的介绍见 [aweshelf: 像整理抽屉一样轻松收纳agent会话](https://mp.weixin.qq.com/s/ifUFVG3UTOu4PU18wggAqA)。）
+[aweshelf](https://github.com/wehuman01/aweshelf) 是 Claude Code 和 Codex CLI 的 session 书签管理器——保存、标记、搜索、恢复，管理你的编程 session 历史。（更详细的介绍见 [aweshelf: 像整理抽屉一样轻松收纳agent会话](https://mp.weixin.qq.com/s/ifUFVG3UTOu4PU18wggAqA)。）
 
 现在 aweswitch 与 aweshelf 的集成做到了无缝衔接。以前给 session 加书签是手动操作：找到 session ID，跑一条 `aweshelf bookmark` 命令。实际上，你总是忘。
 
@@ -142,5 +142,5 @@ aweswitch 的核心没有变：named profiles、runtime injection、不碰全局
 aweswitch 是 [Webioinfo](https://www.webioinfo.top/) 生态的一部分：
 
 - **[aweskill](https://aweskill.webioinfo.top/)** — 面向 47+ AI 编程 Agent 的 Skill 包管理器
-- **[aweshelf](https://github.com/Webioinfo01/aweshelf)** — AI 编程 session 管理器，支持 profile 感知的 session 恢复
-- **[awescholar](https://github.com/Webioinfo01/awescholar)** — 自动化科学文献发现
+- **[aweshelf](https://github.com/wehuman01/aweshelf)** — AI 编程 session 管理器，支持 profile 感知的 session 恢复
+- **[awescholar](https://github.com/wehuman01/awescholar)** — 自动化科学文献发现

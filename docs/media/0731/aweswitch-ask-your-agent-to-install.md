@@ -2,13 +2,13 @@
 
 ![aweswitch](../../../logo/hero.png)
 
-I told my coding agent one sentence: *"Read https://github.com/Webioinfo01/aweswitch/blob/main/README.ai.md and follow it."* Then I went to get a coffee.
+I told my coding agent one sentence: *"Read https://github.com/wehuman01/aweswitch/blob/main/README.ai.md and follow it."* Then I went to get a coffee.
 
 When I came back, aweswitch was installed, the skill was registered, the config was initialized, and three profiles were ready: `cc-glm`, `cc-xiaomi`, and `cx-openai`. It had also noticed my `~/.zshrc` was missing `OPENAI_API_KEY`, asked me to paste the token, and added the export line in the right place.
 
 That is the new shape of installing an agent tool. The install is a task. The agent does tasks. So I gave the task to the agent.
 
-GitHub: [github.com/Webioinfo01/aweswitch](https://github.com/Webioinfo01/aweswitch)
+GitHub: [github.com/wehuman01/aweswitch](https://github.com/wehuman01/aweswitch)
 
 ## The Install: A README the Agent Reads
 
@@ -27,7 +27,7 @@ The `README.ai.md` is a six-step install contract written for the agent, not the
 
 In Claude Code, Codex, Cursor, or any of the 47+ agents supported by aweskill, the prompt is the same:
 
-> "Read https://github.com/Webioinfo01/aweswitch/blob/main/README.ai.md and follow it to install and configure aweswitch."
+> "Read https://github.com/wehuman01/aweswitch/blob/main/README.ai.md and follow it to install and configure aweswitch."
 
 The agent does the rest. It runs `pip3 install`, sets up the skill, initializes the config, edits `~/.zshrc`, and reports back. If something fails — Node.js missing, Python too old, an existing config with profiles you care about — it stops and asks, instead of silently breaking things.
 
@@ -97,7 +97,7 @@ Both bookmarked under `review`. Both running side by side. You flip between them
 
 ## Companion Tool: aweshelf
 
-The [aweshelf](https://github.com/Webioinfo01/aweshelf) name that keeps showing up across the day above is aweswitch's companion: a session bookmark manager for Claude Code and Codex. The split of labor is simple — aweswitch handles the **launch** (getting the provider, key, and model in place), aweshelf handles the **memory** (bookmarking, categorizing, searching, and resuming sessions, with the original profile restored when you resume). The two work standalone but are best together.
+The [aweshelf](https://github.com/wehuman01/aweshelf) name that keeps showing up across the day above is aweswitch's companion: a session bookmark manager for Claude Code and Codex. The split of labor is simple — aweswitch handles the **launch** (getting the provider, key, and model in place), aweshelf handles the **memory** (bookmarking, categorizing, searching, and resuming sessions, with the original profile restored when you resume). The two work standalone but are best together.
 
 Installing it is the same one line:
 
@@ -145,7 +145,7 @@ aweswitch does not manage the agent files. That is OpenCode's job. aweswitch man
 
 Profiles are half the problem. The other half is remembering which session was on which profile.
 
-[aweshelf](https://github.com/Webioinfo01/aweshelf) is the session-bookmark companion. The `-c` and `-t` flags at launch time hand the bookmark off to aweshelf automatically:
+[aweshelf](https://github.com/wehuman01/aweshelf) is the session-bookmark companion. The `-c` and `-t` flags at launch time hand the bookmark off to aweshelf automatically:
 
 ```bash
 aweswitch cc-glm -c backend -t "Fix auth bug"
@@ -177,7 +177,7 @@ The future of agent tooling is not "tools that work well with agents." It is "to
 
 Tell your agent:
 
-> "Read https://github.com/Webioinfo01/aweswitch/blob/main/README.ai.md and follow it."
+> "Read https://github.com/wehuman01/aweswitch/blob/main/README.ai.md and follow it."
 
 Then check that `/aweswitch` appears in the skill list. If it does, you are thirty seconds away from a new profile. If it does not, restart the agent.
 
@@ -194,5 +194,5 @@ The agent already knows the answers. You just had not given it the README yet.
 aweswitch is part of the [Webioinfo](https://www.webioinfo.top/) ecosystem:
 
 - **[aweskill](https://aweskill.webioinfo.top/)** — CLI-first Skill package manager for 47+ AI coding agents
-- **[aweshelf](https://github.com/Webioinfo01/aweshelf)** — AI coding session manager with profile-aware restoration
-- **[awescholar](https://github.com/Webioinfo01/awescholar)** — Automated scientific literature discovery
+- **[aweshelf](https://github.com/wehuman01/aweshelf)** — AI coding session manager with profile-aware restoration
+- **[awescholar](https://github.com/wehuman01/awescholar)** — Automated scientific literature discovery

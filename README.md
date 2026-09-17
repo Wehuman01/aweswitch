@@ -1,6 +1,6 @@
 <div align="center">
   <img src="logo/hero.png" alt="aweswitch" width="860">
-  <h1>aweswitch: Agent Profile Switcher <a href="https://github.com/Webioinfo01/aweskill"><img src="https://raw.githubusercontent.com/Webioinfo01/aweskill/main/logo/aweskill-badge2.svg" alt="aweskill companion"></a></h1>
+  <h1>aweswitch: Agent Profile Switcher <a href="https://github.com/wehuman01/aweskill"><img src="https://raw.githubusercontent.com/wehuman01/aweskill/main/logo/aweskill-badge2.svg" alt="aweskill companion"></a></h1>
   <p><strong>A tiny local launcher for switching AI agent runtime profiles.</strong></p>
 <p><strong>One config, one command — works the same on Ubuntu, macOS, and Windows.</strong></p>
   <p>Start different agent sessions with different API endpoints, tokens, and models without rewriting global agent config.</p>
@@ -23,7 +23,7 @@
     <img src="https://img.shields.io/badge/install-pip-22C55E?style=flat-square" alt="pip install">
     <img src="https://img.shields.io/badge/platform-ubuntu%20%7C%20macOS%20%7C%20windows-334155?style=flat-square" alt="Platform">
     <img src="https://img.shields.io/pepy/dt/aweswitch?style=flat-square" alt="PyPI downloads">
-    <img src="https://img.shields.io/github/stars/Webioinfo01/aweswitch?style=flat-square" alt="GitHub stars">
+    <img src="https://img.shields.io/github/stars/wehuman01/aweswitch?style=flat-square" alt="GitHub stars">
   </p>
 </div>
 
@@ -47,7 +47,7 @@ If you are working in Claude Code, Codex, Cursor, or another coding agent, hand 
 You can tell your agent:
 
 ```text
-Read https://github.com/Webioinfo01/aweswitch/blob/main/README.ai.md and follow it to install and configure aweswitch.
+Read https://github.com/wehuman01/aweswitch/blob/main/README.ai.md and follow it to install and configure aweswitch.
 ```
 
 Once the bootstrap finishes, aweswitch is ready to use. There are two ways to use a profile:
@@ -204,13 +204,13 @@ Install the aweswitch skill into this agent so you can manage my aweswitch profi
 
 ```bash
 # Via aweskill (recommended): install from GitHub and project into this agent
-aweskill install Webioinfo01/aweswitch
+aweskill install wehuman01/aweswitch
 aweskill agent add skill aweswitch --global --agent codex
 aweskill agent list --global --agent codex   # expect aweswitch shown as linked
 
 # Without aweskill: copy SKILL.md directly into the agent's skill directory
 mkdir -p ~/.claude/skills/aweswitch
-curl -fsSL https://raw.githubusercontent.com/Webioinfo01/aweswitch/main/resources/skills/aweswitch/SKILL.md -o ~/.claude/skills/aweswitch/SKILL.md
+curl -fsSL https://raw.githubusercontent.com/wehuman01/aweswitch/main/resources/skills/aweswitch/SKILL.md -o ~/.claude/skills/aweswitch/SKILL.md
 ```
 
 </details>
@@ -449,9 +449,9 @@ How it works:
 
 aweswitch is powered by three companion tools:
 
-- **[aweskill](https://github.com/Webioinfo01/aweskill)** — CLI skill package manager for AI agents. Handles skill installation, updates, and projection across 47+ coding agents.
-- **[aweshelf](https://github.com/Webioinfo01/aweshelf)** — Session bookmark manager for Claude Code and Codex. Bookmark, categorize, and restore sessions with aweswitch profiles.
-- **[awerouter](https://github.com/mugpeng/awerouter)** — Smart LLM router: routes agent requests to flash (cheap) or pro (strong) providers based on structural signals.
+- **[aweskill](https://github.com/wehuman01/aweskill)** — CLI skill package manager for AI agents. Handles skill installation, updates, and projection across 47+ coding agents.
+- **[aweshelf](https://github.com/wehuman01/aweshelf)** — Session bookmark manager for Claude Code and Codex. Bookmark, categorize, and restore sessions with aweswitch profiles.
+- **[awerouter](https://github.com/wehuman01/awerouter)** — Smart LLM router: routes agent requests to flash (cheap) or pro (strong) providers based on structural signals.
 
 aweswitch manages how you **launch** sessions; aweshelf manages how you **remember** them. Use `aweswitch -c` to auto-bookmark at launch, and `aweshelf resume` to restore with the same profile later. And awerouter pairs just as smoothly: point a profile's `BASE_URL` at the awerouter daemon (`ANTHROPIC_MODEL=auto`), and every session you launch goes through its flash/pro routing.
 
@@ -472,7 +472,7 @@ export AWESWITCH_NO_UPDATE_CHECK=1    # disable the background check
 
 ## aweshelf Integration
 
-[aweshelf](https://github.com/Webioinfo01/aweshelf) is a session bookmark manager for Claude Code and Codex CLI. It lets you save, tag, search, and resume past coding sessions.
+[aweshelf](https://github.com/wehuman01/aweshelf) is a session bookmark manager for Claude Code and Codex CLI. It lets you save, tag, search, and resume past coding sessions.
 
 aweswitch integrates with aweshelf so you can bookmark a session at launch time, without a separate step:
 
@@ -513,7 +513,7 @@ aweshelf browse                 # interactive TUI browser
 
 </details>
 
-See the [aweshelf README](https://github.com/Webioinfo01/aweshelf) for full documentation.
+See the [aweshelf README](https://github.com/wehuman01/aweshelf) for full documentation.
 
 ## FAQ
 
@@ -588,6 +588,7 @@ The key difference is that `aweswitch` avoids global config mutation. Many switc
 - `env` values only apply to the launched process.
 - `${VAR_NAME}` values are expanded from the current shell environment.
 - `show` and `config show` redact keys matching token, key, secret, password, or auth; account credential blobs are masked entirely.
+- `aweswitch usage` reads quota usage for Codex official accounts only. GLM and Doubao do not expose a compatible quota API and remain dashboard-only. API-key Codex profiles are not supported.
 
 ### Claude Profiles
 
@@ -766,12 +767,12 @@ aweswitch is part of a growing family of "awesome" tools — CLI-first, local-fi
 ### CLI Tools
 
 - **[aweskill](https://aweskill.webioinfo.top/)** — CLI-first skill package manager supporting 47+ AI coding agents.
-- **[aweswitch](https://github.com/Webioinfo01/aweswitch)** — Agent profile switcher for Claude Code, Codex, and OpenCode.
-- **[awerouter](https://github.com/mugpeng/awerouter)** — Smart router that splits requests between Flash and Pro models using structural signals, cutting unnecessary model spend.
-- **[aweshelf](https://github.com/Webioinfo01/aweshelf)** — Bookmark, categorize, and restore AI coding sessions; pairs with aweswitch to save profiles and launch with one command.
+- **[aweswitch](https://github.com/wehuman01/aweswitch)** — Agent profile switcher for Claude Code, Codex, and OpenCode.
+- **[awerouter](https://github.com/wehuman01/awerouter)** — Smart router that splits requests between Flash and Pro models using structural signals, cutting unnecessary model spend.
+- **[aweshelf](https://github.com/wehuman01/aweshelf)** — Bookmark, categorize, and restore AI coding sessions; pairs with aweswitch to save profiles and launch with one command.
 - **[aweshare](https://github.com/wehuman01/aweshare)** — Share local Ollama/vLLM backends, domestic coding plans, or authorized OpenAI/Anthropic subscriptions through a self-hosted hub — a sharing economy for tokens.
 - **[awewarm](https://github.com/wehuman01/awewarm)** — Subscription window warmer that keeps AI coding-plan windows active, for local setups and through a remote hub server.
-- **[awescholar](https://github.com/Webioinfo01/awescholar)** — AI-agent-operable scientific literature discovery and curation.
+- **[awescholar](https://github.com/wehuman01/awescholar)** — AI-agent-operable scientific literature discovery and curation.
 
 ### Desktop Apps
 

@@ -4228,7 +4228,7 @@ def run_profile(ctx, category, title):
         die("missing profile name")
     if category:
         if not shutil.which("aweshelf"):
-            click.echo("warning: aweshelf not found; -c/-t ignored. Install: pip3 install aweshelf (https://github.com/Webioinfo01/aweshelf)", err=True)
+            click.echo("warning: aweshelf not found; -c/-t ignored. Install: pip3 install aweshelf (https://github.com/wehuman01/aweshelf)", err=True)
         else:
             _auto_bookmark(category, profile_name, title=title)
     config = load_config(config_path())

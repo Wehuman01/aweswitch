@@ -8,7 +8,7 @@
 
 等我回来时，token 已经进了用户环境变量，profile 从 `cmd.exe` 和 PowerShell 里都能顺利启动，agent 还给了我一段话的修改总结。那套在 macOS 上跑了几个月的配置，现在在 Windows 上也能跑了。同一条命令，同样的结果，两个 shell 都是。
 
-GitHub：[github.com/Webioinfo01/aweswitch](https://github.com/Webioinfo01/aweswitch)
+GitHub：[github.com/wehuman01/aweswitch](https://github.com/wehuman01/aweswitch)
 
 ## 两个 Bug修了
 
@@ -124,7 +124,7 @@ v0.3.5 给 skill 加了两项新能力：
 如果你在 Claude Code、Codex、Cursor 或其他编程 agent 里，跟它说：
 
 ```text
-Read https://github.com/Webioinfo01/aweswitch/blob/main/README.ai.md and follow it to install and configure aweswitch.
+Read https://github.com/wehuman01/aweswitch/blob/main/README.ai.md and follow it to install and configure aweswitch.
 ```
 
 agent 会装好 CLI，替你跑 `setx GLM_ANTHROPIC_AUTH_TOKEN "..."`，回查那个值，然后叫你开个新终端。之后 `aweswitch cc-glm` 就能像在 macOS 上一样跑了。
@@ -156,5 +156,5 @@ aweswitch cc-glm
 aweswitch 是 [Webioinfo](https://www.webioinfo.top/) 生态的一部分：
 
 - **[aweskill](https://aweskill.webioinfo.top/)** —— 为 47+ AI 编程 agent 打造的 CLI 优先 Skill 包管理器
-- **[aweshelf](https://github.com/Webioinfo01/aweshelf)** —— AI 编程会话管理器，支持按 profile 恢复
-- **[awescholar](https://github.com/Webioinfo01/awescholar)** —— 自动化的科研文献发现
+- **[aweshelf](https://github.com/wehuman01/aweshelf)** —— AI 编程会话管理器，支持按 profile 恢复
+- **[awescholar](https://github.com/wehuman01/awescholar)** —— 自动化的科研文献发现

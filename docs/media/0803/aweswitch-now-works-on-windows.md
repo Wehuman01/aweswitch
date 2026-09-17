@@ -8,7 +8,7 @@ I finally got on Windows. I open `cmd.exe` and type `aweswitch cc-glm`. I open P
 
 When I came back, the token was in the user environment, the profile launched cleanly from both `cmd.exe` and PowerShell, and the agent had a one-paragraph summary of what it changed. The setup that worked on macOS for months now works on Windows. Same command, same result, both shells.
 
-GitHub: [github.com/Webioinfo01/aweswitch](https://github.com/Webioinfo01/aweswitch)
+GitHub: [github.com/wehuman01/aweswitch](https://github.com/wehuman01/aweswitch)
 
 ## Two Bugs, Fixed
 
@@ -124,7 +124,7 @@ That prompt works the same way on a Windows laptop as it does on a Mac. The agen
 If you are in Claude Code, Codex, Cursor, or another coding agent, tell it:
 
 ```text
-Read https://github.com/Webioinfo01/aweswitch/blob/main/README.ai.md and follow it to install and configure aweswitch.
+Read https://github.com/wehuman01/aweswitch/blob/main/README.ai.md and follow it to install and configure aweswitch.
 ```
 
 The agent installs the CLI, runs `setx GLM_ANTHROPIC_AUTH_TOKEN "..."` for you, checks the value back, and tells you to open a new terminal. From there `aweswitch cc-glm` works the same way it does on macOS.
@@ -147,5 +147,5 @@ That is the whole Windows experience now. Same config, same command, same `/awes
 aweswitch is part of the [Webioinfo](https://www.webioinfo.top/) ecosystem:
 
 - **[aweskill](https://aweskill.webioinfo.top/)** — CLI-first Skill package manager for 47+ AI coding agents
-- **[aweshelf](https://github.com/Webioinfo01/aweshelf)** — AI coding session manager with profile-aware restoration
-- **[awescholar](https://github.com/Webioinfo01/awescholar)** — Automated scientific literature discovery
+- **[aweshelf](https://github.com/wehuman01/aweshelf)** — AI coding session manager with profile-aware restoration
+- **[awescholar](https://github.com/wehuman01/awescholar)** — Automated scientific literature discovery

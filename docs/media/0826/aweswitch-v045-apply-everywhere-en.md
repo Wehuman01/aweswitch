@@ -14,7 +14,7 @@ Before closing my laptop, I left my agent one sentence:
 
 Then I went downstairs to pick up a package. By the time I climbed back up, I typed a bare `codex` — and it opened on my own model and endpoint. That's what a default feels like.
 
-GitHub: [github.com/Webioinfo01/aweswitch](https://github.com/Webioinfo01/aweswitch)
+GitHub: [github.com/wehuman01/aweswitch](https://github.com/wehuman01/aweswitch)
 
 ## v0.4.5: Apply for All Three Agents
 
@@ -81,7 +81,7 @@ One-line summary: profiles used to take effect only when you launched through aw
 - **v0.4.1** Backup reorganized: new `aweswitch config backup`; `restore` moved to `config restore [FILE]` and can roll back to any explicit snapshot
 - **v0.4.2** Launch by display value: when models are configured as a mapping, launch args can use the display name (`step-router-v1` instead of `peng1/step-router-v1`); ambiguous names are rejected with the matching candidates listed
 
-Full details live in the [CHANGELOG](https://github.com/Webioinfo01/aweswitch/blob/main/docs/CHANGELOG.md).
+Full details live in the [CHANGELOG](https://github.com/wehuman01/aweswitch/blob/main/docs/CHANGELOG.md).
 
 ## Try It
 
@@ -90,7 +90,7 @@ Full details live in the [CHANGELOG](https://github.com/Webioinfo01/aweswitch/bl
 If you're in Claude Code, Codex, or any other coding agent, tell it:
 
 ```text
-Read https://github.com/Webioinfo01/aweswitch/blob/main/README.ai.md and follow it to install and configure aweswitch.
+Read https://github.com/wehuman01/aweswitch/blob/main/README.ai.md and follow it to install and configure aweswitch.
 ```
 
 ### Or do it yourself
@@ -123,6 +123,6 @@ No more memorizing which config lives in which file. One profile, three agents, 
 aweswitch is part of the [Webioinfo](https://www.webioinfo.top/) ecosystem:
 
 - **[aweskill](https://aweskill.webioinfo.top/)** — CLI-first skill package manager for 47+ AI coding agents
-- **[aweshelf](https://github.com/Webioinfo01/aweshelf)** — AI coding session manager with profile-aware restore
-- **[awerouter](https://github.com/mugpeng/awerouter)** — smart LLM router: splits requests between Flash (cheap) and Pro (capable) providers based on structural signals
-- **[awescholar](https://github.com/Webioinfo01/awescholar)** — automated scientific literature discovery
+- **[aweshelf](https://github.com/wehuman01/aweshelf)** — AI coding session manager with profile-aware restore
+- **[awerouter](https://github.com/wehuman01/awerouter)** — smart LLM router: splits requests between Flash (cheap) and Pro (capable) providers based on structural signals
+- **[awescholar](https://github.com/wehuman01/awescholar)** — automated scientific literature discovery

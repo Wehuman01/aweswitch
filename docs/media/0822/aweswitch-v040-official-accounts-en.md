@@ -12,7 +12,7 @@ Before closing my laptop, I left my agent one sentence:
 
 Then I went downstairs to pick up a package, taking out the trash on the way. By the time I climbed back up with the box under my arm, `aweswitch list` already showed a few new rows with `account` in the kind column. Work account and personal account, both in there, neither stepping on the other's login state.
 
-GitHub: [github.com/Webioinfo01/aweswitch](https://github.com/Webioinfo01/aweswitch)
+GitHub: [github.com/wehuman01/aweswitch](https://github.com/wehuman01/aweswitch)
 
 ## v0.4.0: Official Accounts Are First-Class Citizens
 
@@ -80,7 +80,7 @@ One-line summary: whatever you could do with API profiles, you can now do with o
 
 The updates from v0.3.7 through v0.3.9 ship with this release too — in one sentence: Codex profiles can now pick a third-party model at launch (`aweswitch cx-aihubmix kimi-k2.7`), changed OpenCode credentials sync automatically instead of erroring, plaintext API keys went from hard error to a warning tip, plus a round of hardening against corrupt configs and background-process edge cases.
 
-Details live in the [CHANGELOG](https://github.com/Webioinfo01/aweswitch/blob/main/docs/CHANGELOG.md).
+Details live in the [CHANGELOG](https://github.com/wehuman01/aweswitch/blob/main/docs/CHANGELOG.md).
 
 ## Try It
 
@@ -89,7 +89,7 @@ Details live in the [CHANGELOG](https://github.com/Webioinfo01/aweswitch/blob/ma
 If you're in Claude Code, Codex, or any other coding agent, tell it:
 
 ```text
-Read https://github.com/Webioinfo01/aweswitch/blob/main/README.ai.md and follow it to install and configure aweswitch.
+Read https://github.com/wehuman01/aweswitch/blob/main/README.ai.md and follow it to install and configure aweswitch.
 ```
 
 ### Or do it yourself
@@ -122,6 +122,6 @@ No more logging out just to log back in. No more counting browser authorization 
 aweswitch is part of the [Webioinfo](https://www.webioinfo.top/) ecosystem:
 
 - **[aweskill](https://aweskill.webioinfo.top/)** — CLI-first skill package manager for 47+ AI coding agents
-- **[aweshelf](https://github.com/Webioinfo01/aweshelf)** — AI coding session manager with profile-aware restore
-- **[awerouter](https://github.com/mugpeng/awerouter)** — smart LLM router: splits requests between Flash (cheap) and Pro (capable) providers based on structural signals
-- **[awescholar](https://github.com/Webioinfo01/awescholar)** — automated scientific literature discovery
+- **[aweshelf](https://github.com/wehuman01/aweshelf)** — AI coding session manager with profile-aware restore
+- **[awerouter](https://github.com/wehuman01/awerouter)** — smart LLM router: splits requests between Flash (cheap) and Pro (capable) providers based on structural signals
+- **[awescholar](https://github.com/wehuman01/awescholar)** — automated scientific literature discovery

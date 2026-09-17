@@ -738,7 +738,7 @@ When a profile does not define `ANTHROPIC_DEFAULT_HAIKU_MODEL`, `SONNET_MODEL`, 
 
 ## v0.1.6
 
-`v0.1.6` adds auto-bookmark support via [aweshelf](https://github.com/Webioinfo01/aweshelf). Sessions can now be tagged with a category and custom title at launch time, without requiring a separate bookmark step.
+`v0.1.6` adds auto-bookmark support via [aweshelf](https://github.com/wehuman01/aweshelf). Sessions can now be tagged with a category and custom title at launch time, without requiring a separate bookmark step.
 
 ### Auto-bookmark with aweshelf
 

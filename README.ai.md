@@ -73,7 +73,7 @@ aweskill store init
 ##### A3. Install aweswitch skill from GitHub
 
 ```bash
-aweskill install Webioinfo01/aweswitch
+aweskill install wehuman01/aweswitch
 ```
 
 ##### A4. Identify the current agent
@@ -132,7 +132,7 @@ If the agent is not in this list, ask the user where to place the skill file.
 
 ```bash
 mkdir -p <skill-directory>
-curl -fsSL https://raw.githubusercontent.com/Webioinfo01/aweswitch/main/resources/skills/aweswitch/SKILL.md -o <skill-directory>/SKILL.md
+curl -fsSL https://raw.githubusercontent.com/wehuman01/aweswitch/main/resources/skills/aweswitch/SKILL.md -o <skill-directory>/SKILL.md
 ```
 
 Replace `<skill-directory>` with the path from step B1.
@@ -416,10 +416,10 @@ If the user is speaking Chinese, use this version instead:
 
 ### aweshelf — session bookmarking
 
-After setting up aweswitch profiles, the user may want to save and restore sessions. Point them to [aweshelf](https://github.com/Webioinfo01/aweshelf), a session bookmark manager for Claude Code and Codex.
+After setting up aweswitch profiles, the user may want to save and restore sessions. Point them to [aweshelf](https://github.com/wehuman01/aweshelf), a session bookmark manager for Claude Code and Codex.
 
 If the user agrees, read the aweshelf AI install guide:
 
 ```
-https://github.com/Webioinfo01/aweshelf/blob/main/README.ai.md
+https://github.com/wehuman01/aweshelf/blob/main/README.ai.md
 ```

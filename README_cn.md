@@ -1,6 +1,6 @@
 <div align="center">
   <img src="logo/hero.png" alt="aweswitch" width="860">
-  <h1>aweswitch: Agent Profile Switcher <a href="https://github.com/Webioinfo01/aweskill"><img src="https://raw.githubusercontent.com/Webioinfo01/aweskill/main/logo/aweskill-badge2.svg" alt="aweskill companion"></a></h1>
+  <h1>aweswitch: Agent Profile Switcher <a href="https://github.com/wehuman01/aweskill"><img src="https://raw.githubusercontent.com/wehuman01/aweskill/main/logo/aweskill-badge2.svg" alt="aweskill companion"></a></h1>
   <p><strong>一个很小的本地启动器，用来切换 AI agent 运行时 profile。</strong></p>
 <p><strong>一份配置，一条命令 — Ubuntu、macOS、Windows 上用法一致。</strong></p>
   <p>用不同 API、token 和模型启动不同 agent 会话，同时不改写全局 agent 配置。</p>
@@ -23,7 +23,7 @@
     <img src="https://img.shields.io/badge/install-pip-22C55E?style=flat-square" alt="pip install">
     <img src="https://img.shields.io/badge/platform-ubuntu%20%7C%20macOS%20%7C%20windows-334155?style=flat-square" alt="Platform">
     <img src="https://img.shields.io/pepy/dt/aweswitch?style=flat-square" alt="PyPI downloads">
-    <img src="https://img.shields.io/github/stars/Webioinfo01/aweswitch?style=flat-square" alt="GitHub stars">
+    <img src="https://img.shields.io/github/stars/wehuman01/aweswitch?style=flat-square" alt="GitHub stars">
   </p>
 </div>
 
@@ -47,7 +47,7 @@
 可以直接对 agent 说：
 
 ```text
-Read https://github.com/Webioinfo01/aweswitch/blob/main/README.ai.md and follow it to install and configure aweswitch.
+Read https://github.com/wehuman01/aweswitch/blob/main/README.ai.md and follow it to install and configure aweswitch.
 ```
 
 引导完成后就可以直接用了。使用一个 profile 有两种方式：
@@ -204,13 +204,13 @@ export ZCODE_API_KEY="..."
 
 ```bash
 # 通过 aweskill（推荐）：从 GitHub 安装并投影给当前 agent
-aweskill install Webioinfo01/aweswitch
+aweskill install wehuman01/aweswitch
 aweskill agent add skill aweswitch --global --agent codex
 aweskill agent list --global --agent codex   # 期望 aweswitch 显示为 linked
 
 # 不用 aweskill：把 SKILL.md 直接拷进 agent 的 skill 目录
 mkdir -p ~/.claude/skills/aweswitch
-curl -fsSL https://raw.githubusercontent.com/Webioinfo01/aweswitch/main/resources/skills/aweswitch/SKILL.md -o ~/.claude/skills/aweswitch/SKILL.md
+curl -fsSL https://raw.githubusercontent.com/wehuman01/aweswitch/main/resources/skills/aweswitch/SKILL.md -o ~/.claude/skills/aweswitch/SKILL.md
 ```
 
 </details>
@@ -248,6 +248,7 @@ curl -fsSL https://raw.githubusercontent.com/Webioinfo01/aweswitch/main/resource
 ```bash
 aweswitch list                        # 列出所有 profile（含 api/account 类型）
 aweswitch show cc-glm                 # 查看单个 profile（密钥已脱敏）
+aweswitch usage cxo-work              # 查看 Codex 官方帐号的配额使用情况
 aweswitch config path                 # 查看配置文件路径
 aweswitch config show                 # 查看完整配置（密钥已脱敏）
 aweswitch config edit                 # 编辑配置文件
@@ -427,6 +428,8 @@ aweswitch account add claude team-a   # 导入当前已登录的 claude 帐号
 aweswitch cxo-work                    # 用 work 帐号启动 codex
 aweswitch account sync codex work     # 把刷新过的 token 回写到配置
 aweswitch account remove codex work --purge
+aweswitch usage cxo-work              # 查看 Codex 官方帐号的配额使用情况
+aweswitch usage --all-codex           # 查看所有 Codex 官方帐号的配额使用情况
 ```
 
 `aweswitch add` 选 `official` 类型是同样两条路径的交互式入口：依次询问 provider、帐号名和方式（`login` 运行 OAuth 登录，`import` 读取当前 CLI 登录）。
@@ -437,6 +440,7 @@ aweswitch account remove codex work --purge
 - 帐号目录一旦存在就是事实来源 — CLI 会在里面刷新 OAuth token，已存在的凭据文件永远不会被配置里的旧 blob 覆盖。需要备份/迁移时运行 `aweswitch account sync` 把刷新过的 token 回写到配置。
 - macOS 上 Claude Code 默认把登录存在 Keychain；`account login` 和帐号启动都会强制凭据走帐号目录内的文件，保证帐号隔离。`account add` 读取的是 `~/.claude/.credentials.json`，该文件不存在时会失败 — macOS 上建议直接用 `account login`。
 - 帐号只支持启动模式，不参与 `apply`。
+- `aweswitch usage <codex-帐号>` 可读取 Codex 官方帐号的配额使用情况。仅 Codex 官方帐号暴露兼容的配额 API；GLM 和 Doubao 仍只能在 dashboard 查看。基于 API key 的 Codex profile 不支持此功能。
 - 会话默认按帐号隔离：每个帐号目录各有自己的 `sessions/`，`codex resume` 只能看到该帐号录制的会话。在 `config.json` 顶层设置 `"share_sessions": true` 即可让 Codex 会话跨帐号共享：下次启动时，每个 Codex 帐号的 `sessions/` 和 `archived_sessions/` 会变成指向共享池 `~/.config/aweswitch/accounts/codex/.shared/` 的链接，已有的 rollout 文件自动迁入。之后任意帐号都能续任何会话 — `aweswitch cxo-peng resume <id>` 可以续 `cxo-heck` 录的会话 — `codex resume` 选择器也会列出所有帐号的会话（加 `--all` 可解除 cwd 过滤）。默认 Codex home 也会进池：直接运行 `codex` 或 `cx-*` api profile 录制的会话落在 `~/.codex/sessions`，下次 Codex 启动时该目录同样变成池链接，这些会话在任何帐号下都能续，池里的会话在裸 codex 下也能续。关掉开关会再次解除帐号目录和默认 home 的链接；已进入共享池的文件留在池里，因为 rollout 文件本身不带帐号身份。Claude 帐号暂不共享。
 
 </details>
@@ -445,9 +449,9 @@ aweswitch account remove codex work --purge
 
 aweswitch 由三个配套工具驱动：
 
-- **[aweskill](https://github.com/Webioinfo01/aweskill)** — 面向 AI agent 的 CLI skill 包管理器。负责 skill 的安装、更新和投影，支持 47+ 编程 agent。
-- **[aweshelf](https://github.com/Webioinfo01/aweshelf)** — Claude Code 和 Codex 的会话 bookmark 管理器。可以保存、分类和恢复会话，支持 aweswitch profile。
-- **[awerouter](https://github.com/mugpeng/awerouter)** — 智能 LLM 路由器：按结构信号把 agent 请求分给 flash（便宜）或 pro（强力）模型。
+- **[aweskill](https://github.com/wehuman01/aweskill)** — 面向 AI agent 的 CLI skill 包管理器。负责 skill 的安装、更新和投影，支持 47+ 编程 agent。
+- **[aweshelf](https://github.com/wehuman01/aweshelf)** — Claude Code 和 Codex 的会话 bookmark 管理器。可以保存、分类和恢复会话，支持 aweswitch profile。
+- **[awerouter](https://github.com/wehuman01/awerouter)** — 智能 LLM 路由器：按结构信号把 agent 请求分给 flash（便宜）或 pro（强力）模型。
 
 aweswitch 管**启动**会话，aweshelf 管**记住**会话。用 `aweswitch -c` 在启动时自动 bookmark，用 `aweshelf resume` 恢复时会带上相同的 profile。搭配 awerouter 也一样丝滑：把 profile 的 `BASE_URL` 指向 awerouter daemon（`ANTHROPIC_MODEL=auto`），启动的每个会话都走它的 flash/pro 智能分流。
 
@@ -468,7 +472,7 @@ export AWESWITCH_NO_UPDATE_CHECK=1    # 禁用后台检查
 
 ## aweshelf 集成
 
-[aweshelf](https://github.com/Webioinfo01/aweshelf) 是 Claude Code 和 Codex CLI 的会话 bookmark 管理器，可以保存、标记、搜索和恢复历史 coding 会话。
+[aweshelf](https://github.com/wehuman01/aweshelf) 是 Claude Code 和 Codex CLI 的会话 bookmark 管理器，可以保存、标记、搜索和恢复历史 coding 会话。
 
 aweswitch 与 aweshelf 集成，支持在启动会话时自动完成 bookmark，无需额外操作：
 
@@ -509,7 +513,7 @@ aweshelf browse                 # 交互式 TUI 浏览器
 
 </details>
 
-完整文档见 [aweshelf README](https://github.com/Webioinfo01/aweshelf)。
+完整文档见 [aweshelf README](https://github.com/wehuman01/aweshelf)。
 
 ## FAQ
 
@@ -584,6 +588,7 @@ Profile name（如 `oc-glm`）作为 opencode.json 中的 provider key。模型�
 - `env` 只作用于本次启动的子进程。
 - `${VAR_NAME}` 会从当前 shell 环境变量中展开。
 - `show` 和 `config show` 会隐藏 token、key、secret、password、auth 这类敏感字段；帐号凭据 blob 整段脱敏。
+- `aweswitch usage` 仅支持读取 Codex 官方帐号的配额。GLM 和 Doubao 未开放兼容的配额 API，仍只能在 dashboard 查看。基于 API key 的 Codex profile 不支持此功能。
 
 ### Claude Profile
 
@@ -760,12 +765,12 @@ aweswitch 是一个不断壮大的 "awesome" 工具家族中的一员 — 围绕
 ### CLI 工具
 
 - **[aweskill](https://aweskill.webioinfo.top/)** — CLI 优先的技能包管理器，支持 47+ AI 编程 agent。
-- **[aweswitch](https://github.com/Webioinfo01/aweswitch)** — Claude Code、Codex、OpenCode 的 agent 配置切换器。
-- **[awerouter](https://github.com/mugpeng/awerouter)** — 智能路由器，用结构信号把请求分给 Flash 或 Pro 模型，减少不必要的模型开销。
-- **[aweshelf](https://github.com/Webioinfo01/aweshelf)** — 收藏、分类、恢复 AI 编程会话，还能搭配 aweswitch 实现保存配置，一键启动。
+- **[aweswitch](https://github.com/wehuman01/aweswitch)** — Claude Code、Codex、OpenCode 的 agent 配置切换器。
+- **[awerouter](https://github.com/wehuman01/awerouter)** — 智能路由器，用结构信号把请求分给 Flash 或 Pro 模型，减少不必要的模型开销。
+- **[aweshelf](https://github.com/wehuman01/aweshelf)** — 收藏、分类、恢复 AI 编程会话，还能搭配 aweswitch 实现保存配置，一键启动。
 - **[aweshare](https://github.com/wehuman01/aweshare)** — 通过自建 Hub 共享本地 Ollama/vLLM，或国产厂商 coding plan，或已授权的 OpenAI/Anthropic 帐号订阅，实现 token 的共享经济。
 - **[awewarm](https://github.com/wehuman01/awewarm)** — 订阅窗口保持器，让 AI 编程套餐的窗口持续激活，无论是本地设置，还是通过远程连接的服务器。
-- **[awescholar](https://github.com/Webioinfo01/awescholar)** — AI agent 可自主执行的科学文献发现与策展，搜索、标注、筛选和报告学术论文。
+- **[awescholar](https://github.com/wehuman01/awescholar)** — AI agent 可自主执行的科学文献发现与策展，搜索、标注、筛选和报告学术论文。
 
 ### 桌面应用
 
