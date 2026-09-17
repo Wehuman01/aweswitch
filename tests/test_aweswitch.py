@@ -5500,23 +5500,47 @@ class AweSwitchTests(unittest.TestCase):
         now = int(time.time())
         three_days = int(now + 3 * 86400)
         payload = {
-            "plan": "pro",
+            "plan": "plus",
             "windows": {
-                "primary": {"used_percentage": 100, "window_minutes": 300, "reset_unix_timestamp": now + 3600},
-                "secondary": {"used_percentage": 88, "window_minutes": 10080, "reset_unix_timestamp": three_days},
+                "primary": {"used_percentage": 22, "window_minutes": 300, "reset_unix_timestamp": now + 3600},
+                "secondary": {"used_percentage": 75, "window_minutes": 10080, "reset_unix_timestamp": three_days},
             },
-            "credits": {"has_credits": True, "balance": 12},
+            "credits": {"has_credits": False, "unlimited": False},
+            "token_profile": {
+                "lifetime_tokens": 109164593,
+                "peak_daily_tokens": 27617967,
+                "longest_running_turn_sec": 414,
+                "current_streak_days": 7,
+                "daily_usage_buckets": [
+                    {"start_date": "2026-09-10", "tokens": 968649},
+                    {"start_date": "2026-09-11", "tokens": 27617967},
+                    {"start_date": "2026-09-12", "tokens": 10594275},
+                    {"start_date": "2026-09-13", "tokens": 15232178},
+                    {"start_date": "2026-09-14", "tokens": 19625689},
+                    {"start_date": "2026-09-15", "tokens": 17003864},
+                    {"start_date": "2026-09-16", "tokens": 18121971},
+                ],
+            },
         }
-        out = aweswitch._format_human_usage("cxo-work", payload)
-        self.assertIn("cxo-work:", out)
-        self.assertIn("Plan: pro", out)
+        out = aweswitch._format_human_usage("cxo-peng", payload)
+        self.assertIn("cxo-peng:", out)
+        self.assertIn("Plan:", out)
+        self.assertIn("plus", out)
         self.assertIn("5h limit", out)
         self.assertIn("Weekly limit", out)
-        self.assertIn("0% left", out)
-        self.assertIn("12% left", out)
+        self.assertIn("78% left", out)
+        self.assertIn("25% left", out)
         self.assertIn("resets", out)
         self.assertIn("\u2588", out)
-        self.assertIn("credits", out)
+        self.assertIn("Credits:", out)
+        self.assertIn("none", out)
+        self.assertIn("109.2M lifetime", out)
+        self.assertIn("peak 27.6M/day", out)
+        self.assertIn("streak 7d", out)
+        self.assertIn("longest turn 6m54s", out)
+        self.assertIn("Last 7 days:", out)
+        self.assertIn("10 Sep - 16 Sep", out)
+        self.assertIn("\u2581", out)
 
     def test_usage_progress_helpers(self):
         bar, remaining = aweswitch._usage_progress(88)
@@ -5526,6 +5550,24 @@ class AweSwitchTests(unittest.TestCase):
         self.assertIsNone(aweswitch._usage_reset_text("nope"))
         self.assertEqual(aweswitch._usage_window_label("primary", {"window_minutes": 300}), "5h limit")
         self.assertEqual(aweswitch._usage_window_label("x", {"window_minutes": 10080}), "Weekly limit")
+        self.assertEqual(aweswitch._usage_compact_count(968649), "968.6K")
+        self.assertEqual(aweswitch._usage_compact_count(109164593), "109.2M")
+        self.assertEqual(aweswitch._usage_compact_count(42), "42")
+        self.assertEqual(aweswitch._usage_compact_duration(414), "6m54s")
+        self.assertEqual(aweswitch._usage_compact_duration(3720), "1h02m")
+        self.assertEqual(aweswitch._usage_credits_text(5), "balance 5")
+        self.assertEqual(aweswitch._usage_credits_text({"unlimited": True}), "unlimited")
+        self.assertEqual(aweswitch._usage_credits_text({"balance": 12}), "balance 12")
+        self.assertEqual(aweswitch._usage_credits_text({"has_credits": False}), "none")
+        self.assertIsNone(aweswitch._usage_sparkline([{"tokens": 5}]))
+        self.assertEqual(
+            aweswitch._usage_sparkline([
+                {"tokens": 968649}, {"tokens": 27617967}, {"tokens": 10594275},
+                {"tokens": 15232178}, {"tokens": 19625689}, {"tokens": 17003864},
+                {"tokens": 18121971},
+            ]),
+            "\u2581\u2588\u2584\u2585\u2586\u2585\u2586",
+        )
         with tempfile.TemporaryDirectory() as tmp:
             config_file = Path(tmp) / "config.json"
             config_file.write_text(json.dumps({

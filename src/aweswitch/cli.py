@@ -3123,17 +3123,118 @@ def _render_usage_window_bar(label, window):
     """Render one quota window as a labeled progress bar."""
     name = _usage_window_label(label if isinstance(label, str) else str(label), window or {})
     used = (window or {}).get("used_percentage")
-    prefix = f"{name}:".ljust(14)
-    if isinstance(used, (int, float)) and not isinstance(used, bool):
+    if _usage_is_num(used):
         bar, remaining = _usage_progress(used)
         body = f"[ {bar} ] {remaining}% left"
     else:
         body = "[ .... ]"
-    line = f"  {prefix} {body}"
     reset_text = _usage_reset_text((window or {}).get("reset_unix_timestamp"))
     if reset_text:
-        line += f" ({reset_text})"
-    return line
+        body += f" ({reset_text})"
+    return _usage_line(name, body)
+
+
+def _usage_is_num(value):
+    return isinstance(value, (int, float)) and not isinstance(value, bool)
+
+
+def _usage_line(label, value):
+    return f"  {f'{label}:':<14} {value}"
+
+
+def _usage_compact_count(value):
+    """Format a token count as a compact human string (109164593 -> 109.2M)."""
+    number = float(value)
+    for unit, scale in (("B", 1e9), ("M", 1e6), ("K", 1e3)):
+        if abs(number) >= scale:
+            compact = f"{number / scale:.1f}".rstrip("0").rstrip(".")
+            return compact + unit
+    return str(int(number))
+
+
+def _usage_compact_duration(seconds):
+    sec = int(round(seconds))
+    if sec >= 3600:
+        return f"{sec // 3600}h{(sec % 3600) // 60:02d}m"
+    if sec >= 60:
+        return f"{sec // 60}m{sec % 60:02d}s"
+    return f"{sec}s"
+
+
+def _usage_credits_text(credits):
+    """Compress the credits blob into one short phrase."""
+    if _usage_is_num(credits):
+        return f"balance {_usage_compact_count(credits)}"
+    if not isinstance(credits, dict):
+        return None
+    if credits.get("unlimited") is True:
+        return "unlimited"
+    balance = credits.get("balance")
+    if _usage_is_num(balance):
+        return f"balance {_usage_compact_count(balance)}"
+    if credits.get("has_credits") is True:
+        return "yes"
+    return "none"
+
+
+def _usage_sparkline(buckets):
+    """Render daily usage buckets as a tiny relative bar chart."""
+    steps = "\u2581\u2582\u2583\u2584\u2585\u2586\u2587\u2588"
+    tokens = [
+        item.get("tokens") for item in buckets
+        if isinstance(item, dict) and _usage_is_num(item.get("tokens"))
+    ]
+    if len(tokens) < 2:
+        return None
+    peak = max(tokens)
+    if peak <= 0:
+        return None
+    return "".join(
+        steps[min(len(steps) - 1, int(value / peak * len(steps)))]
+        for value in tokens
+    )
+
+
+def _usage_token_profile_lines(profile):
+    """Compress the token profile into a summary line plus a daily sparkline."""
+    lines = []
+    parts = []
+    total = profile.get("total_tokens")
+    lifetime = profile.get("lifetime_tokens")
+    if _usage_is_num(total):
+        parts.append(f"{_usage_compact_count(total)} current")
+    if _usage_is_num(lifetime):
+        parts.append(f"{_usage_compact_count(lifetime)} lifetime")
+    peak = profile.get("peak_daily_tokens")
+    if _usage_is_num(peak):
+        parts.append(f"peak {_usage_compact_count(peak)}/day")
+    streak = profile.get("current_streak_days")
+    if _usage_is_num(streak) and streak > 0:
+        parts.append(f"streak {int(streak)}d")
+    turn = profile.get("longest_running_turn_sec")
+    if _usage_is_num(turn):
+        parts.append(f"longest turn {_usage_compact_duration(turn)}")
+    if parts:
+        lines.append(_usage_line("Tokens", " \u00b7 ".join(parts)))
+    buckets = profile.get("daily_usage_buckets")
+    if isinstance(buckets, list):
+        spark = _usage_sparkline(buckets)
+        if spark:
+            value = spark
+            dates = [
+                item.get("start_date") for item in buckets
+                if isinstance(item, dict) and isinstance(item.get("start_date"), str)
+            ]
+            if len(dates) >= 2:
+                from datetime import datetime
+                try:
+                    first = datetime.strptime(dates[0], "%Y-%m-%d").strftime("%d %b")
+                    last = datetime.strptime(dates[-1], "%Y-%m-%d").strftime("%d %b")
+                    value += f"  {first} - {last}"
+                except ValueError:
+                    pass
+            lines.append(_usage_line(f"Last {len(buckets)} days", value))
+    return lines
 
 
 def _render_usage_visual(account_name, usage):
@@ -3141,11 +3242,17 @@ def _render_usage_visual(account_name, usage):
     lines = [f"{account_name}:"]
     plan = usage.get("plan")
     if isinstance(plan, str) and plan.strip():
-        lines.append(f"  Plan: {plan}")
+        lines.append(_usage_line("Plan", plan.strip()))
     for label, window in usage.get("windows", {}).items():
         lines.append(_render_usage_window_bar(label, window if isinstance(window, dict) else {}))
+    credits_text = _usage_credits_text(usage.get("credits"))
+    if credits_text:
+        lines.append(_usage_line("Credits", credits_text))
+    profile = usage.get("token_profile")
+    if isinstance(profile, dict):
+        lines.extend(_usage_token_profile_lines(profile))
     for key, value in usage.items():
-        if key in ("plan", "windows"):
+        if key in ("plan", "windows", "credits", "token_profile"):
             continue
         if value in ({}, [], None):
             continue
