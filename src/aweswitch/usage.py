@@ -64,6 +64,7 @@ def load_codex_credentials(
 
 
 _TOKEN_PROFILE_FIELDS = (
+    "total_tokens",
     "lifetime_tokens",
     "peak_daily_tokens",
     "longest_running_turn_sec",
@@ -84,7 +85,8 @@ def _normalize_window(data: Any) -> dict:
     used = data.get("used_percent", data.get("used_percentage"))
     if _is_number(used):
         result["used_percentage"] = used
-    reset_at = data.get("reset_at", data.get("resets_at"))
+    reset_at = data.get(
+        "reset_at", data.get("resets_at", data.get("reset_unix_timestamp")))
     if _is_number(reset_at):
         result["reset_unix_timestamp"] = int(reset_at)
     window_seconds = data.get("limit_window_seconds")
@@ -95,15 +97,17 @@ def _normalize_window(data: Any) -> dict:
     return result
 
 
-def _normalize_credits(data: Any) -> dict:
+def _normalize_credits(data: Any):
+    if _is_number(data):
+        return data
     if not isinstance(data, dict):
-        return {}
+        return None
     result = {}
     for key in ("has_credits", "unlimited", "balance"):
         value = data.get(key)
         if isinstance(value, bool) or _is_number(value):
             result[key] = value
-    return result
+    return result or None
 
 
 def _normalize_token_profile(data: Any) -> dict:
@@ -176,8 +180,12 @@ def _normalize_usage_response(data: Any) -> dict:
         result["windows"] = windows
 
     credits = _normalize_credits(data.get("credits"))
-    if credits:
+    if credits is not None:
         result["credits"] = credits
+
+    token_profile = _normalize_token_profile(data.get("token_profile"))
+    if token_profile:
+        result["token_profile"] = token_profile
 
     return result
 
@@ -205,8 +213,10 @@ def _request_usage_endpoint(
         raise UsageError(
             "HTTP error {} fetching quota data.".format(exc.code)
         ) from exc
-    except (urllib.error.URLError, socket.timeout, TimeoutError, OSError):
+    except (socket.timeout, TimeoutError):
         raise UsageError("Request timed out fetching quota data.") from None
+    except (urllib.error.URLError, OSError):
+        raise UsageError("Network error fetching quota data.") from None
     except (json.JSONDecodeError, UnicodeDecodeError):
         raise UsageError("Invalid JSON response from quota endpoint.") from None
 
@@ -258,10 +268,10 @@ def fetch_codex_usage(
     # Best-effort profile fetch; failure must not undo a successful result.
     try:
         profile_raw = _request(profile_url)
-    except UsageError:
+    except Exception:
         pass
     else:
-        if isinstance(profile_raw, dict):
+        if isinstance(profile_raw, dict) and "token_profile" not in result:
             token_profile = _normalize_token_profile(profile_raw.get("stats"))
             if token_profile:
                 result["token_profile"] = token_profile

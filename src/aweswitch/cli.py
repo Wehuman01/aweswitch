@@ -3044,7 +3044,11 @@ def _format_usage_timestamp(value):
 def _format_usage_value(value):
     """Recursively format usage data, turning reset timestamps into local time."""
     if isinstance(value, dict):
-        return {key: _format_usage_value(val) for key, val in value.items()}
+        return {
+            key: (_format_usage_timestamp(val) if key == "reset_unix_timestamp"
+                  else _format_usage_value(val))
+            for key, val in value.items()
+        }
     if isinstance(value, list):
         return [_format_usage_value(item) for item in value]
     return _format_usage_timestamp(value)
@@ -3105,12 +3109,9 @@ def _redact_usage_data(data):
 
 
 def _get_usage_module():
-    """Lazily import the usage module; dies if it is not present."""
-    try:
-        from aweswitch import usage
-        return usage
-    except ImportError:
-        die("usage module not available")
+    """Lazily load the usage module so command tests can replace its transport."""
+    import importlib
+    return importlib.import_module("aweswitch.usage")
 
 
 def command_list(config):
@@ -4035,8 +4036,8 @@ def usage_command(ctx, accounts, all_codex, json_output):
         except usage_mod.UsageError as exc:
             results.append({"account": name, "error": str(exc)})
             any_failed = True
-        except Exception as exc:
-            results.append({"account": name, "error": f"unexpected error: {exc}"})
+        except Exception:
+            results.append({"account": name, "error": "Unexpected error fetching quota data."})
             any_failed = True
 
     if json_output:
