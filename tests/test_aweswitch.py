@@ -5490,9 +5490,10 @@ class AweSwitchTests(unittest.TestCase):
 
         self.assertEqual(result.exit_code, 0, result.output)
         self.assertIn("cxo-work:", result.output)
-        self.assertIn("plan: pro", result.output)
-        self.assertIn("credits", result.output)
-        self.assertIn("tokens", result.output)
+        self.assertIn("Plan:", result.output)
+        self.assertIn("pro", result.output)
+        self.assertIn("Credits:", result.output)
+        self.assertIn("tokens:", result.output)
         self.assertIn("resets", result.output)
 
     def test_usage_visual_progress_bar_rendering(self):
