@@ -1,5 +1,9 @@
 """Post-command update reminder for aweswitch."""
 
+# Vendored across the awe series: awerouter, aweswitch, aweshelf, and awewarm each
+# carry a near-identical copy (no shared runtime dependency, by design). Keep
+# behavioral fixes in sync manually across the four copies. Last synced: 2026-09-19.
+
 import json
 import os
 import re
